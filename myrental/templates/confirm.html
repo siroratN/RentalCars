@@ -1,0 +1,89 @@
+{% extends "layout.html" %}
+{% block title %}Confirm Rental{% endblock title %}
+
+{% block head %}
+<script type="text/javascript">
+  const stripe = Stripe('{{ STRIPE_PUBLIC_KEY }}');
+
+  document.addEventListener("DOMContentLoaded", function () {
+    console.log('{{car.id}}')
+    document.getElementById("checkout-button").addEventListener("click", function () {
+      fetch("/create-checkout-session/{{ car.id }}/", {
+          method: "POST",
+          headers: {
+              "Content-Type": "application/json",
+              "X-CSRFToken": "{{ csrf_token }}",
+          },
+      })
+      .then(function (response) {
+          return response.json();
+      })
+      .then(function (session) {
+          return stripe.redirectToCheckout({ sessionId: session.id });
+      })
+      .then(function (result) {
+          if (result.error) {
+              alert(result.error.message);
+          }
+      })
+      .catch(function (error) {
+          console.error("Error:", error);
+      });
+    });
+  });
+</script>
+{% endblock head %}
+
+{% block content %}
+<body class="bg-gray-100">
+    <!-- Invoice -->
+    <div class="max-w-[85rem] px-4 sm:px-6 lg:px-8 mx-auto my-4 sm:my-10">
+      <div class="mx-auto sm:w-11/12 lg:w-3/4">
+        <!-- Card -->
+        <div class="flex flex-col p-6 bg-white shadow-lg sm:p-10 rounded-xl">
+          <h2 class="mb-6 text-4xl font-bold text-center text-gray-800">Rental Car Confirm</h2>
+  
+          <div class="mt-6">
+            <p class="mt-2 text-lg text-gray-600"><span class="font-semibold text-gray-900">ชื่อ:</span> Sirorat Nambun</p>
+            <p class="mt-2 text-lg text-gray-600"><span class="font-semibold text-gray-900">เบอร์:</span> 080-834-2717</p>
+            <p class="mt-2 text-lg text-gray-600"><span class="font-semibold text-gray-900">อีเมลล์:</span> fueng@gmail.com</p>
+          </div>
+  
+          <div class="relative mt-10 overflow-x-auto">
+            <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+              <thead class="text-xs text-gray-700 uppercase bg-gray-200 dark:bg-gray-700 dark:text-gray-400">
+                <tr>
+                  <th scope="col" class="px-6 py-3 rounded-s-lg">Car</th>
+                  <th scope="col" class="px-6 py-3">Start date</th>
+                  <th scope="col" class="px-6 py-3">End date</th>
+                  <th scope="col" class="px-6 py-3 rounded-e-lg">Price</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr class="bg-white border-b dark:bg-gray-800">
+                  <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">Toyota Altis 2022</th>
+                  <td class="px-6 py-4">1/1/2020</td>
+                  <td class="px-6 py-4">2/2/2022</td>
+                  <td class="px-6 py-4">2,000</td>
+                </tr>
+              </tbody>
+              <tfoot>
+                <tr class="font-semibold text-gray-900 bg-gray-100 dark:text-white">
+                  <th scope="row" class="px-6 py-3 text-base">Total</th>
+                  <td class="px-6 py-3"></td>
+                  <td class="px-6 py-3"></td>
+                  <td class="px-6 py-3">2,000</td>
+                </tr>
+              </tfoot>
+            </table>
+          </div>
+  
+          <div class="grid grid-cols-2 gap-4 mt-8">
+            <a href="{% url 'Date' %}" class="px-6 py-3 font-semibold text-center text-white transition bg-blue-600 rounded-lg hover:bg-blue-700">เลือกเช่าอีก</a>
+            <button id="checkout-button" class="px-6 py-3 font-semibold text-center text-white transition bg-green-600 rounded-lg hover:bg-green-700">ชำระเงิน</button>
+          </div>
+        </div>
+      </div>
+    </div>
+</body>
+{% endblock content %}

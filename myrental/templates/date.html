@@ -1,0 +1,38 @@
+{% extends "layout.html" %}
+{% block title %}{% endblock title %}
+{% block head %}
+
+{% endblock head %}
+{% block content %}
+
+<!-- your_template.html -->
+<form method="POST" class="w-full p-6 mx-auto bg-white rounded-lg shadow-md sm:w-3/4 lg:w-1/2">
+    {% csrf_token %}
+    
+    <div class="mb-4 text-red-600">
+        {{ form.non_field_errors }}
+    </div>
+    
+    <!-- Date Range Picker -->
+    <div id="date-range-picker" class="flex items-center mb-6">
+        <div class="relative w-full">
+            <label for="start_date" class="block text-sm font-medium text-gray-700">Start Date</label>
+            {{ form.start_date}}
+        </div>
+
+        <span class="mx-4 text-gray-500">to</span>
+
+        <div class="relative w-full">
+            <label for="end_date" class="block text-sm font-medium text-gray-700">End Date</label>
+            {{ form.end_date}}
+        </div>
+    </div>
+
+    <!-- Submit Button -->
+    <div class="flex justify-end">
+        <button type="submit" class="px-6 py-3 text-white bg-blue-600 rounded-lg hover:bg-blue-700 focus:ring-4 focus:ring-blue-300 focus:outline-none">Submit</button>
+    </div>
+</form>
+
+  
+{% endblock content %}

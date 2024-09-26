@@ -1,0 +1,58 @@
+from django.db import models
+
+class CategoryCar(models.Model):
+    name = models.CharField(max_length=50)
+    image = models.CharField(max_length=100)
+    description = models.CharField(max_length=100)
+
+    def __str__(self):
+        return self.name
+    
+class Feature(models.Model):
+    name = models.CharField(max_length=50)
+    description = models.CharField(max_length=100)
+
+    def __str__(self):
+        return self.name
+
+class Car(models.Model):
+    make = models.CharField(max_length=50)
+    model = models.CharField(max_length=50)
+    year = models.IntegerField()
+    price_per_day = models.DecimalField(max_digits=8, decimal_places=2)
+    description = models.CharField(max_length=100)
+    category = models.ForeignKey(CategoryCar, on_delete=models.CASCADE)
+    available = models.BooleanField(default=True)
+    image = models.CharField(max_length=100)
+    feature = models.ManyToManyField(Feature)
+    def __str__(self):
+        return f"{self.make} {self.model}"
+
+class Customer(models.Model):
+    first_name = models.CharField(max_length=50)
+    last_name = models.CharField(max_length=50)
+    phone_number = models.CharField(max_length=10)
+    address = models.CharField(max_length=100)
+
+    def __str__(self):
+        return f"{self.first_name} {self.last_name}"
+
+class Rental(models.Model):
+    STATUS_CHOICES = [
+        ('Pending', 'Pending'),
+        ('Completed', 'Completed'),
+        ('Canceled', 'Canceled'),
+    ]
+
+    customer = models.ForeignKey(Customer, on_delete=models.CASCADE)
+    total_price = models.DecimalField(max_digits=10, decimal_places=2, default=0)
+    status = models.CharField(max_length=10, choices=STATUS_CHOICES)
+    car = models.ManyToManyField(Car, through='Rental_car')
+
+class Rental_car(models.Model):
+    rental = models.ForeignKey(Rental, on_delete=models.CASCADE)
+    car = models.ForeignKey(Car, on_delete=models.CASCADE)
+    start_date = models.DateTimeField()
+    end_date = models.DateTimeField()
+
+
