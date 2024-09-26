@@ -19,12 +19,7 @@
           return response.json();
       })
       .then(function (session) {
-          return stripe.redirectToCheckout({ sessionId: session.id });
-      })
-      .then(function (result) {
-          if (result.error) {
-              alert(result.error.message);
-          }
+          return stripe.redirectToCheckout({ sessionId: session.id }); //ส่งไป stripe
       })
       .catch(function (error) {
           console.error("Error:", error);
@@ -64,7 +59,7 @@
                   <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">Toyota Altis 2022</th>
                   <td class="px-6 py-4">1/1/2020</td>
                   <td class="px-6 py-4">2/2/2022</td>
-                  <td class="px-6 py-4">2,000</td>
+                  <td class="px-6 py-4">{{car.price_per_day}}</td>
                 </tr>
               </tbody>
               <tfoot>
