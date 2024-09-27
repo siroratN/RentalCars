@@ -1,0 +1,73 @@
+{% extends 'layout.html' %}
+
+{% block title %}
+  Login
+{% endblock %}
+{% block head %}
+
+{% endblock %}
+{% block content %}
+  <div class="font-[sans-serif]">
+    <div class="grid items-center h-full gap-4 lg:grid-cols-3 md:grid-cols-2">
+      <div class="w-full lg:col-span-2 md:h-screen">
+        <img src="https://images.unsplash.com/photo-1694025881942-b752102cee95?q=80&w=2944&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" class="block object-cover w-full h-full" alt="login-image" />
+      </div>
+      <div class="w-full p-6">
+        <form method="POST" action="{% url 'login' %}">
+          {{ form.non_field_errors }}
+          {% csrf_token %}
+          <h3 class="mb-3 text-3xl font-extrabold text-center text-gray-800">เข้าสู่ระบบ</h3>
+          <div>
+            {{ form.username.errors }}
+            <label class="text-gray-800 text-[15px] mb-2 block">Username</label>
+            <div class="relative flex items-center">
+              <input name="username" type="text" required class="w-full text-sm text-gray-800 bg-gray-100 focus:bg-transparent px-4 py-3.5 rounded-md outline-blue-600" placeholder="username" />
+              <svg xmlns="http://www.w3.org/2000/svg" fill="#bbb" stroke="#bbb" class="absolute w-5 h-5 right-4" viewBox="0 0 24 24">
+                <circle cx="10" cy="7" r="6"></circle>
+                <path d="M14 15H6a5 5 0 0 0-5 5 3 3 0 0 0 3 3h12a3 3 0 0 0 3-3 5 5 0 0 0-5-5zm8-4h-2.59l.3-.29a1 1 0 0 0-1.42-1.42l-2 2a1 1 0 0 0 0 1.42l2 2a1 1 0 0 0 1.42 0 1 1 0 0 0 0-1.42l-.3-.29H22a1 1 0 0 0 0-2z"></path>
+              </svg>
+            </div>
+          </div>
+
+          <div class="mt-4">
+            {{ form.password.errors }}
+            <label class="text-gray-800 text-[15px] mb-2 block">Password</label>
+            <div class="relative flex items-center">
+              <input name="password" type="password" required class="w-full text-sm text-gray-800 bg-gray-100 focus:bg-transparent px-4 py-3.5 rounded-md outline-blue-600" placeholder="password" />
+              <svg xmlns="http://www.w3.org/2000/svg" fill="#bbb" stroke="#bbb" class="absolute w-5 h-5 cursor-pointer right-4" viewBox="0 0 128 128">
+                <path d="M64 104C22.127 104 1.367 67.496.504 65.943a4 4 0 0 1 0-3.887C1.367 60.504 22.127 24 64 24s62.633 36.504 63.496 38.057a4 4 0 0 1 0 3.887C126.633 67.496 105.873 104 64 104zM8.707 63.994C13.465 71.205 32.146 96 64 96c31.955 0 50.553-24.775 55.293-31.994C114.535 56.795 95.854 32 64 32 32.045 32 13.447 56.775 8.707 63.994zM64 88c-13.234 0-24-10.766-24-24s10.766-24 24-24 24 10.766 24 24-10.766 24-24 24zm0-40c-8.822 0-16 7.178-16 16s7.178 16 16 16 16-7.178 16-16-7.178-16-16-16z"></path>
+              </svg>
+            </div>
+          </div>
+
+          <div class="mb-8">
+            <p class="flex justify-end mt-4 text-sm text-gray-800">
+              ไม่มีบัญชี? <a href="{% url 'regis' %}" class="ml-1 font-semibold text-blue-600 hover:underline whitespace-nowrap">ลงทะเบียน</a>
+            </p>
+          </div>
+          <div class="mt-8">
+            <button type="submit" class="w-full px-6 py-3 text-sm tracking-wide text-white bg-blue-600 rounded-md hover:bg-blue-700 focus:outline-none">เข้าสู่ระบบ</button>
+          </div>
+
+          <div class="flex items-center gap-4 my-4">
+            <hr class="w-full border-gray-300" />
+            <p class="text-sm text-center text-gray-800">or</p>
+            <hr class="w-full border-gray-300" />
+          </div>
+
+          <button type="button" class="flex items-center justify-center w-full gap-4 px-6 py-3 text-sm tracking-wide text-gray-800 border border-gray-300 rounded-md bg-gray-50 hover:bg-gray-100 focus:outline-none">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20px" class="inline" viewBox="0 0 512 512">
+              <path fill="#fbbd00" d="M120 256c0-25.367 6.989-49.13 19.131-69.477v-86.308H52.823C18.568 144.703 0 198.922 0 256s18.568 111.297 52.823 155.785h86.308v-86.308C126.989 305.13 120 281.367 120 256z" data-original="#fbbd00" />
+              <path fill="#0f9d58" d="m256 392-60 60 60 60c57.079 0 111.297-18.568 155.785-52.823v-86.216h-86.216C305.044 385.147 281.181 392 256 392z" data-original="#0f9d58" />
+              <path fill="#31aa52" d="m139.131 325.477-86.308 86.308a260.085 260.085 0 0 0 22.158 25.235C123.333 485.371 187.62 512 256 512V392c-49.624 0-93.117-26.72-116.869-66.523z" data-original="#31aa52" />
+              <path fill="#3c79e6" d="M512 256a258.24 258.24 0 0 0-4.192-46.377l-2.251-12.299H256v120h121.452a135.385 135.385 0 0 1-51.884 55.638l86.216 86.216a260.085 260.085 0 0 0 25.235-22.158C485.371 388.667 512 324.38 512 256z" data-original="#3c79e6" />
+              <path fill="#cf2d48" d="m352.167 159.833 10.606 10.606 84.853-84.852-10.606-10.606C388.668 26.629 324.381 0 256 0l-60 60 60 60c36.326 0 70.479 14.146 96.167 39.833z" data-original="#cf2d48" />
+              <path fill="#eb4132" d="M256 120V0C187.62 0 123.333 26.629 74.98 74.98a259.849 259.849 0 0 0-22.158 25.235l86.308 86.308C162.883 146.72 206.376 120 256 120z" data-original="#eb4132" />
+            </svg>Continue with Google
+          </button>
+          <br />
+        </form>
+      </div>
+    </div>
+  </div>
+{% endblock %}

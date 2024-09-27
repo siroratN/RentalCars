@@ -1,0 +1,91 @@
+{% extends 'layout.html' %}
+
+{% block title %}
+  Register
+{% endblock %}
+
+{% block head %}
+{% endblock %}
+
+{% block content %}
+  <div class="font-[sans-serif]">
+    <div class="grid items-center h-full gap-4 lg:grid-cols-3 md:grid-cols-2">
+      <div class="w-full h-full lg:col-span-2">
+        <img src="https://images.unsplash.com/photo-1694025881942-b752102cee95?q=80&w=2944&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" class="block object-cover w-full h-full" alt="login-image" />
+      </div>
+      <div class="w-full p-6">
+        <form method="POST" action="{% url 'regis' %}">
+          {% csrf_token %}
+          <h3 class="mb-3 text-3xl font-extrabold text-center text-gray-800">ลงทะเบียน</h3>
+          <div>
+            {{ form.username.errors }}
+            <label class="text-gray-800 text-[15px] mb-2 block">Username</label>
+            {{ form.username }}
+          </div>
+
+          <div class="mt-4">
+            {{ form.first_name.errors }}
+            <label class="text-gray-800 text-[15px] mb-2 block">First Name</label>
+            {{ form.first_name }}
+          </div>
+
+          <div class="mt-4">
+            {{ form.last_name.errors }}
+            <label class="text-gray-800 text-[15px] mb-2 block">Last Name</label>
+            {{ form.last_name }}
+          </div>
+
+          <div class="mt-4">
+            {{ form.phone_number.errors }}
+            <label class="text-gray-800 text-[15px] mb-2 block">Phone</label>
+            {{ form.phone_number }}
+          </div>
+
+          <div class="mt-4">
+            {{ form.email.errors }}
+            <label class="text-gray-800 text-[15px] mb-2 block">Email</label>
+            {{ form.email }}
+          </div>
+
+          <div class="mt-4">
+            {{ form.password.errors }}
+            <label class="text-gray-800 text-[15px] mb-2 block">Password</label>
+            {{ form.password }}
+          </div>
+
+          <div class="mt-4">
+            {{ form.address.errors }}
+            <label class="text-gray-800 text-[15px] mb-2 block">Address</label>
+            {{ form.address }}
+          </div>
+
+          <div class="mb-8">
+            <p class="flex justify-end mt-4 text-sm text-gray-800">
+              มีบัญชีแล้ว? <a href="{% url 'login' %}" class="ml-1 font-semibold text-blue-600 hover:underline whitespace-nowrap">เข้าสู่ระบบ</a>
+            </p>
+          </div>
+
+          <div class="mt-8">
+            <button type="submit" class="w-full px-6 py-3 text-sm tracking-wide text-white bg-blue-600 rounded-md hover:bg-blue-700 focus:outline-none">ลงทะเบียน</button>
+          </div>
+          <div class="flex items-center gap-4 my-4">
+            <hr class="w-full border-gray-300" />
+            <p class="text-sm text-center text-gray-800">or</p>
+            <hr class="w-full border-gray-300" />
+          </div>
+
+          <button type="button" class="flex items-center justify-center w-full gap-4 px-6 py-3 text-sm tracking-wide text-gray-800 border border-gray-300 rounded-md bg-gray-50 hover:bg-gray-100 focus:outline-none">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20px" class="inline" viewBox="0 0 512 512">
+              <path fill="#fbbd00" d="M120 256c0-25.367 6.989-49.13 19.131-69.477v-86.308H52.823C18.568 144.703 0 198.922 0 256s18.568 111.297 52.823 155.785h86.308v-86.308C126.989 305.13 120 281.367 120 256z" data-original="#fbbd00" />
+              <path fill="#0f9d58" d="m256 392-60 60 60 60c57.079 0 111.297-18.568 155.785-52.823v-86.216h-86.216C305.044 385.147 281.181 392 256 392z" data-original="#0f9d58" />
+              <path fill="#31aa52" d="m139.131 325.477-86.308 86.308a260.085 260.085 0 0 0 22.158 25.235C123.333 485.371 187.62 512 256 512V392c-49.624 0-93.117-26.72-116.869-66.523z" data-original="#31aa52" />
+              <path fill="#3c79e6" d="M512 256a258.24 258.24 0 0 0-4.192-46.377l-2.251-12.299H256v120h121.452a135.385 135.385 0 0 1-51.884 55.638l86.216 86.216a260.085 260.085 0 0 0 25.235-22.158C485.371 388.667 512 324.38 512 256z" data-original="#3c79e6" />
+              <path fill="#cf2d48" d="m352.167 159.833 10.606 10.606 84.853-84.852-10.606-10.606C388.668 26.629 324.381 0 256 0l-60 60 60 60c36.326 0 70.479 14.146 96.167 39.833z" data-original="#cf2d48" />
+              <path fill="#eb4132" d="M256 120V0C187.62 0 123.333 26.629 74.98 74.98a259.849 259.849 0 0 0-22.158 25.235l86.308 86.308C162.883 146.72 206.376 120 256 120z" data-original="#eb4132" />
+            </svg>Continue with Google
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+{% endblock %}
