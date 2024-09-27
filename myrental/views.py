@@ -33,17 +33,27 @@ class CreateCheckoutSessionView(View):
                 },
             ],
             mode='payment',
-            success_url=YOUR_DOMAIN + '/success/',
+            success_url=YOUR_DOMAIN + '/success/?session_id={CHECKOUT_SESSION_ID}',
             cancel_url=YOUR_DOMAIN + '/cancel/',
         )
-        
+
         return JsonResponse({
             'id': checkout_session.id
         })
         
 class Success(View):
     def get(self, request):
-        return render(request, 'success.html')
+        session_id = request.GET.get('session_id')
+        checkout_session = stripe.checkout.Session.retrieve(session_id)
+        print(checkout_session)
+        print(checkout_session['payment_status'])
+        status = checkout_session['payment_status']
+        if status == 'paid':
+            return HttpResponse("Payment succeeded!")
+        elif status == 'pending':
+            return HttpResponse("Payment is still processing.")
+        else:
+            return render(request, 'cancel.html')
         
 class Cancel(View):
     def get(self, request):
