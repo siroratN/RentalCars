@@ -4,7 +4,8 @@ from django.views.generic import TemplateView
 from django.urls import *
 
 urlpatterns = [
-    path("rental/", views.HomeRental.as_view(), name="HomeRen"),
+    path("rental/", views.RentalView.as_view(), name="Rental"),
+    path("rental/<str:start_date>/<str:end_date>/", views.RentalView.as_view(), name="RentalSearch"),
     path("car/<int:pk>/detail/", views.CarDetail.as_view(), name="CarDetail"),
     path("confirm/<int:pk>/", views.ConfirmBill.as_view(), name="confirm"),
     path("date/", views.DateRental.as_view(), name="Date"),

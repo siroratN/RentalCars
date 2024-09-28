@@ -1,4 +1,3 @@
-import stripe
 from django.conf import settings
 from django.shortcuts import redirect, render
 from django.views import View
@@ -10,7 +9,10 @@ import stripe
 from django.conf import settings
 from django.http import JsonResponse
 from django.views import View
-from .models import Car
+from .models import *
+import datetime
+from django.db.models import *
+
 
 stripe.api_key = settings.STRIPE_SECRET_KEY
 
@@ -65,19 +67,40 @@ class DateRental(View):
         return render(request, "date.html", {"form" : form})
     def post(self, request):
         form = DateRangeForm(request.POST)
+        print(form)
         if form.is_valid():
-            data = form.cleaned_data
-            print(data)
-            return redirect('HomeRen')
+            start_date = form.cleaned_data['start_date']
+            end_date = form.cleaned_data['end_date']
+            return redirect(f'/rental/?start_date={start_date}&end_date={end_date}')
         return render(request, "date.html", {"form" : form})
 
-        
-class HomeRental(View):
+class RentalView(View):
     def get(self, request):
         cate = CategoryCar.objects.all()
         car = Car.objects.all()
         feature = Feature.objects.all()
+        start = request.GET.get('start_date')
+        end = request.GET.get('end_date')
+        datetime.datetime.strptime(start, "%Y-%m-%d").date()
+        datetime.datetime.strptime(end, "%Y-%m-%d").date()
+        ans = Car.objects.annotate(
+        rental_count=Count('rental')
+        ).filter(
+            Q(rental__rental_car__start_date__gt=end) | 
+            Q(rental__rental_car__end_date__lt=start) |
+            Q(rental_count=0) #รถที่ไม่ได้เช่า
+        )        
         return render(request, "homeren.html", {'cate': cate, "car":car, "feature": feature})
+    
+# class RentalView(View):
+#     def post(self, request, start_date, end_date):
+#         print(start_date)
+#         response_data = {
+#             'start_date': start_date,
+#             'end_date': end_date,
+#             'message': 'Rental request received!'
+#         }
+#         return JsonResponse(response_data)
 
 class CarDetail(View):
     def get(self, request, pk):

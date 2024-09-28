@@ -31,8 +31,6 @@ class Car(models.Model):
 
 class Customer(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    first_name = models.CharField(max_length=50)
-    last_name = models.CharField(max_length=50)
     phone_number = models.CharField(max_length=10)
     address = models.CharField(max_length=100)
 
@@ -54,7 +52,7 @@ class Rental(models.Model):
 class Rental_car(models.Model):
     rental = models.ForeignKey(Rental, on_delete=models.CASCADE)
     car = models.ForeignKey(Car, on_delete=models.CASCADE)
-    start_date = models.DateTimeField()
-    end_date = models.DateTimeField()
+    start_date = models.DateField()
+    end_date = models.DateField()
 
 

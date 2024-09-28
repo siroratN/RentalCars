@@ -78,7 +78,7 @@ WSGI_APPLICATION = 'rentalcar.wsgi.application'
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
-        "NAME": "rentalcar_db",
+        "NAME": "rental_db",
         "USER": "sirorat",
         "PASSWORD": "password",
         "HOST": "localhost",

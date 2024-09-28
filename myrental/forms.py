@@ -8,7 +8,7 @@ class DateRangeForm(forms.Form):
         widget=forms.TextInput(attrs={
             'class': 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5',
             'placeholder': 'Select date start',
-            'id': 'datepicker-range-start',
+            'id': 'start_date',
             'type': 'date'
         })
     )
@@ -16,7 +16,7 @@ class DateRangeForm(forms.Form):
         widget=forms.TextInput(attrs={
             'class': 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5',
             'placeholder': 'Select date end',
-            'id': 'datepicker-range-end',
+            'id': 'end_date',
             'type': 'date'
         })
     )

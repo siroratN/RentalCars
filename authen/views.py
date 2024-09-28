@@ -37,8 +37,6 @@ class RegisterView(View):
             
             customer = Customer.objects.create(
                 user=user,
-                first_name=form.cleaned_data['first_name'],
-                last_name=form.cleaned_data['last_name'],
                 phone_number=form.cleaned_data['phone_number'],
                 address=form.cleaned_data['address']
             )

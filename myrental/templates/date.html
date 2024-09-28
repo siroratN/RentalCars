@@ -52,9 +52,19 @@
             </div>
 
             <div class="flex justify-center">
-                <button type="submit" class="px-6 py-3 text-white transition duration-200 ease-in-out bg-green-600 rounded-lg hover:bg-green-700 focus:ring-4 focus:ring-green-300 focus:outline-none">Submit</button>
+                <button onclick="setDate()" type="submit" class="px-6 py-3 text-white transition duration-200 ease-in-out bg-green-600 rounded-lg hover:bg-green-700 focus:ring-4 focus:ring-green-300 focus:outline-none">Submit</button>
             </div>
         </form>
     </div>
 </div>
+<script>
+function setDate(){
+    startDate = document.getElementById("start_date").value;
+    endDate = document.getElementById("end_date").value;
+    localStorage.setItem("start_date", startDate);
+    localStorage.setItem("end_date", endDate);
+}
+</script>
 {% endblock content %}
+
+
