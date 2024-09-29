@@ -74,38 +74,80 @@ class DateRental(View):
             return redirect(f'/rental/?start_date={start_date}&end_date={end_date}')
         return render(request, "date.html", {"form" : form})
 
+def get_available_cars(start_date, end_date):
+        return Car.objects.annotate(rental_count=Count('rental')).filter(
+            Q(rental__rental_car__start_date__gt=end_date) | 
+            Q(rental__rental_car__end_date__lt=start_date) | 
+            Q(rental_count=0)
+        )
+
 class RentalView(View):
     def get(self, request):
         cate = CategoryCar.objects.all()
         car = Car.objects.all()
         feature = Feature.objects.all()
-        start = request.GET.get('start_date')
-        end = request.GET.get('end_date')
-        datetime.datetime.strptime(start, "%Y-%m-%d").date()
-        datetime.datetime.strptime(end, "%Y-%m-%d").date()
-        ans = Car.objects.annotate(
-        rental_count=Count('rental')
-        ).filter(
-            Q(rental__rental_car__start_date__gt=end) | 
-            Q(rental__rental_car__end_date__lt=start) |
-            Q(rental_count=0) #รถที่ไม่ได้เช่า
-        )        
-        return render(request, "homeren.html", {'cate': cate, "car":car, "feature": feature})
-    
-# class RentalView(View):
-#     def post(self, request, start_date, end_date):
-#         print(start_date)
-#         response_data = {
-#             'start_date': start_date,
-#             'end_date': end_date,
-#             'message': 'Rental request received!'
-#         }
-#         return JsonResponse(response_data)
+
+        start_date = request.GET.get('start_date')
+        end_date = request.GET.get('end_date')
+
+        start_date = datetime.datetime.strptime(start_date, "%Y-%m-%d").date()
+        end_date = datetime.datetime.strptime(end_date, "%Y-%m-%d").date()
+
+        available_cars = get_available_cars(start_date, end_date)
+
+        return render(request, "homeren.html", {
+            'cate': cate,
+            'car': car,
+            'feature': feature,
+            'cars': available_cars,
+            'start_date': start_date,
+            'end_date': end_date,
+        })
+
+    def post(self, request, start_date, end_date):
+        cate = CategoryCar.objects.all()
+        car = Car.objects.all()
+        feature = Feature.objects.all()
+
+        selected_categories = [int(cat_id) for cat_id in request.POST.getlist('categories')]
+        selected_brands = request.POST.getlist('brands')
+        selected_features = [int(feature_id) for feature_id in request.POST.getlist('features')]
+        selected_price = request.POST.get('price')
+        selected_price = int(selected_price) if selected_price else 2000
+        print(selected_price)
+        
+        datetime.datetime.strptime(start_date, "%Y-%m-%d").date()
+        datetime.datetime.strptime(end_date, "%Y-%m-%d").date()
+
+        available_cars = get_available_cars(start_date, end_date)
+
+        if selected_categories:
+            available_cars = available_cars.filter(category__id__in=selected_categories)
+        if selected_brands:
+            available_cars = available_cars.filter(make__in=selected_brands)
+        if selected_features:
+            available_cars = available_cars.filter(feature__id__in=selected_features)
+        if selected_price:
+            available_cars = available_cars.filter(price_per_day__lte=selected_price)
+
+        return render(request, "homeren.html", {
+            'cate': cate,
+            'car': car,
+            'feature': feature,
+            'cars': available_cars,
+            'start_date': start_date,
+            'end_date': end_date,
+            'selected_categories': selected_categories,
+            'selected_brands': selected_brands,
+            'selected_features': selected_features,
+            'selected_price': selected_price
+        })
 
 class CarDetail(View):
     def get(self, request, pk):
         car = Car.objects.get(pk=pk)
         return render(request, 'CarDetail.html', {'car':car})
+
 class ConfirmBill(View):
     def get(self, request, pk):
         car = Car.objects.get(pk=pk)
