@@ -90,8 +90,8 @@ class RentalView(View):
         start_date = request.GET.get('start_date')
         end_date = request.GET.get('end_date')
 
-        start_date = datetime.datetime.strptime(start_date, "%Y-%m-%d").date()
-        end_date = datetime.datetime.strptime(end_date, "%Y-%m-%d").date()
+        datetime.datetime.strptime(start_date, "%Y-%m-%d").date()
+        datetime.datetime.strptime(end_date, "%Y-%m-%d").date()
 
         available_cars = get_available_cars(start_date, end_date)
 
@@ -103,24 +103,21 @@ class RentalView(View):
             'start_date': start_date,
             'end_date': end_date,
         })
-
-    def post(self, request, start_date, end_date):
+        
+class FilterView(View):
+    def get(self, request, start_date, end_date):
         cate = CategoryCar.objects.all()
         car = Car.objects.all()
         feature = Feature.objects.all()
-
-        selected_categories = [int(cat_id) for cat_id in request.POST.getlist('categories')]
-        selected_brands = request.POST.getlist('brands')
-        selected_features = [int(feature_id) for feature_id in request.POST.getlist('features')]
-        selected_price = request.POST.get('price')
-        selected_price = int(selected_price) if selected_price else 2000
+        selected_categories = [int(cat_id) for cat_id in request.GET.getlist('categories')]
+        selected_brands = request.GET.getlist('brands')
+        selected_features = [int(feature_id) for feature_id in request.GET.getlist('features')]
+        selected_price = request.GET.get('price')
+        selected_price = int(selected_price) if selected_price else 8500
         print(selected_price)
-        
         datetime.datetime.strptime(start_date, "%Y-%m-%d").date()
         datetime.datetime.strptime(end_date, "%Y-%m-%d").date()
-
         available_cars = get_available_cars(start_date, end_date)
-
         if selected_categories:
             available_cars = available_cars.filter(category__id__in=selected_categories)
         if selected_brands:
@@ -142,6 +139,32 @@ class RentalView(View):
             'selected_features': selected_features,
             'selected_price': selected_price
         })
+        
+class SearchView(View):
+        def get(self, request, start_date, end_date):
+            cate = CategoryCar.objects.all()
+            car = Car.objects.all()
+            feature = Feature.objects.all()
+        
+            car_search = request.GET.get('car')
+            datetime.datetime.strptime(start_date, "%Y-%m-%d").date()
+            datetime.datetime.strptime(end_date, "%Y-%m-%d").date()
+            
+            available_cars = get_available_cars(start_date, end_date)
+            available_cars = available_cars.filter(make__icontains=car_search)
+            
+            return render(request, "homeren.html", {
+            'cate': cate,
+            'car': car,
+            'feature': feature,
+            'cars': available_cars,
+            'start_date': start_date,
+            'end_date': end_date,
+            'car_search': car_search
+            
+        })
+            
+            
 
 class CarDetail(View):
     def get(self, request, pk):

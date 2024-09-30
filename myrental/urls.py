@@ -5,7 +5,8 @@ from django.urls import *
 
 urlpatterns = [
     path("rental/", views.RentalView.as_view(), name="Rental"),
-    path("rental/<str:start_date>/<str:end_date>/", views.RentalView.as_view(), name="RentalSearch"),
+    path("rental/<str:start_date>/<str:end_date>/", views.FilterView.as_view(), name="RentalSearch"),
+    path("rental/<str:start_date>/<str:end_date>/search/", views.SearchView.as_view(), name="RentalSearchBar"),
     path("car/<int:pk>/detail/", views.CarDetail.as_view(), name="CarDetail"),
     path("confirm/<int:pk>/", views.ConfirmBill.as_view(), name="confirm"),
     path("date/", views.DateRental.as_view(), name="Date"),
