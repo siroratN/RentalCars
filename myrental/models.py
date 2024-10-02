@@ -23,7 +23,6 @@ class Car(models.Model):
     price_per_day = models.DecimalField(max_digits=8, decimal_places=2)
     description = models.CharField(max_length=100)
     category = models.ForeignKey(CategoryCar, on_delete=models.CASCADE)
-    available = models.BooleanField(default=True)
     image = models.CharField(max_length=100)
     feature = models.ManyToManyField(Feature)
     def __str__(self):
@@ -35,7 +34,7 @@ class Customer(models.Model):
     address = models.CharField(max_length=100)
 
     def __str__(self):
-        return f"{self.first_name} {self.last_name}"
+        return f"{self.user.first_name} {self.user.last_name}"
 
 class Rental(models.Model):
     STATUS_CHOICES = [
@@ -47,7 +46,6 @@ class Rental(models.Model):
     customer = models.ForeignKey(Customer, on_delete=models.CASCADE)
     total_price = models.DecimalField(max_digits=10, decimal_places=2, default=0)
     status = models.CharField(max_length=10, choices=STATUS_CHOICES)
-    car = models.ManyToManyField(Car, through='Rental_car')
 
 class Rental_car(models.Model):
     rental = models.ForeignKey(Rental, on_delete=models.CASCADE)
