@@ -20,7 +20,7 @@ class Car(models.Model):
     make = models.CharField(max_length=50)
     model = models.CharField(max_length=50)
     year = models.IntegerField()
-    price_per_day = models.DecimalField(max_digits=8, decimal_places=2)
+    price_per_day = models.IntegerField()
     description = models.CharField(max_length=100)
     category = models.ForeignKey(CategoryCar, on_delete=models.CASCADE)
     image = models.CharField(max_length=100)
@@ -38,13 +38,12 @@ class Customer(models.Model):
 
 class Rental(models.Model):
     STATUS_CHOICES = [
-        ('Pending', 'Pending'),
         ('Completed', 'Completed'),
         ('Canceled', 'Canceled'),
     ]
 
     customer = models.ForeignKey(Customer, on_delete=models.CASCADE)
-    total_price = models.DecimalField(max_digits=10, decimal_places=2, default=0)
+    total_price = models.IntegerField()
     status = models.CharField(max_length=10, choices=STATUS_CHOICES)
 
 class Rental_car(models.Model):
