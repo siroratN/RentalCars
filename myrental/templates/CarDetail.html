@@ -1,4 +1,6 @@
 {% extends 'layout.html' %}
+{% load humanize %}
+
 {% block head %}
 <style>
     body {
@@ -6,43 +8,40 @@
     }
     .rent-button {
       transition: background-color 0.3s ease, box-shadow 0.3s ease, transform 0.1s ease;
-      padding: 12px 24px; /* เพิ่ม Padding เพื่อให้ปุ่มใหญ่ขึ้น */
-      font-size: 1.125rem; /* ขนาดฟอนต์ */
+      padding: 9px 24px;
+      font-size: 1.125rem;
       border-radius: 9px;
     }
     .rent-button:hover {
-        background-color: #4c51bf; /* สีเมื่อ hover */
-        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2); /* เงาเมื่อ hover */
+        background-color: #4c51bf;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2); 
     }
 
 
 </style>
 {% endblock head %}
+{% block nav %}{% include 'nav.html' %}{% endblock nav %}
+
 {% block content %}
 <body>
-    <div class="flex items-center justify-center min-h-screen bg-gray-100"> 
+    <div class="flex items-center justify-center min-h-screen "> 
         <section class="w-full">
-            <div class="max-w-6xl px-6 py-12 mx-auto sm:px-8 lg:px-6">
+            <div class="max-w-6xl px-6 py-12 mx-auto bg-white rounded-md sm:px-8 lg:px-6">
                 <div class="grid grid-cols-1 gap-12 lg:grid-cols-2">
-                    <!-- Image slider section -->
                     <div class="w-full h-full">
                         <div class="relative overflow-hidden shadow-lg rounded-2xl">
                             <img src="{{ car.image }}" alt="{{ car }}" class="object-cover w-full h-full transition-transform duration-500 ease-in-out hover:scale-105">
                         </div>
                     </div>
-                    <!-- Car details section -->
                     <div class="flex items-start justify-center">
                         <div class="w-full lg:pl-10 xl:pl-16">
-                            <!-- Car title and description -->
                             <div class="flex flex-col gap-4 mb-8">
                                 <h2 class="text-4xl font-bold leading-tight text-gray-900">{{ car }}</h2>
                                 <p class="text-lg text-gray-600">{{ car.description }}</p>
                             </div>
-                            <!-- Price and other details -->
                             <div class="flex flex-col gap-4 mb-10 sm:flex-row sm:items-center">
-                                <h5 class="text-2xl font-semibold text-indigo-600">{{ car.price_per_day }} / Day</h5>
+                                <h5 class="text-2xl font-semibold text-indigo-600">{{ car.price_per_day | intcomma}} / Day</h5>
                             </div>
-                            <!-- Features -->
                             <p class="mb-4 text-xl font-medium text-gray-900">Features</p>
                             <ul class="mb-10 space-y-3 text-base text-gray-700">
                                 {% for feature in car.feature.all %}
@@ -54,9 +53,14 @@
                                     </li>
                                 {% endfor %}
                             </ul>
-                            <!-- Rent Now Button -->
-                            <a href="{% url 'confirm' pk=car.id %}" class="py-4 text-lg font-semibold text-white bg-indigo-600 rounded-full shadow-md rent-button">
-                                Rent Now
+                            <a href="{% url 'confirm' pk=car.id %}" onclick="setCar()" 
+                            data-car-id="{{ car.id }}" 
+                            data-car-make="{{ car.make }}" 
+                            data-car-model="{{ car.model }}" 
+                            data-car-year="{{ car.year }}" 
+                            data-car-price="{{ car.price_per_day }}"
+                            class="py-4 text-lg font-semibold text-white bg-indigo-600 rounded-full shadow-md rent-button">
+                                เช่า
                             </a>
                         </div>
                     </div>
@@ -65,4 +69,29 @@
         </section>
     </div>
 </body>
+<script>
+    function setCar() {
+        const carID = event.target.getAttribute('data-car-id');
+        const carMake = event.target.getAttribute('data-car-make');
+        const carModel = event.target.getAttribute('data-car-model');
+        const carYear = event.target.getAttribute('data-car-year');
+        const carPrice = event.target.getAttribute('data-car-price');
+        const startDate = "{{start_date}}";
+        const endDate = "{{end_date}}";
+
+        const car = {
+                id: carID,
+                make: carMake,
+                model: carModel,
+                year: carYear,
+                price: carPrice,
+                start_date: startDate,
+                end_date: endDate
+            };
+    
+        let selectedCars = JSON.parse(localStorage.getItem("selectedCars")) || []
+        selectedCars.push(car);
+        localStorage.setItem("selectedCars", JSON.stringify(selectedCars));    
+    }
+</script>
 {% endblock content %}

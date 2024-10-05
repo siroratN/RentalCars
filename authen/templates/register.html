@@ -1,5 +1,5 @@
 {% extends 'layout.html' %}
-
+{% load widget_tweaks %}
 {% block title %}
   Register
 {% endblock %}
@@ -18,46 +18,51 @@
           {% csrf_token %}
           <h3 class="mb-3 text-3xl font-extrabold text-center text-gray-800">ลงทะเบียน</h3>
           <div>
-            {{ form.username.errors }}
+            {{ user_form.username.errors}}
             <label class="text-gray-800 text-[15px] mb-2 block">Username</label>
-            {{ form.username }}
+            {{ user_form.username|add_class:"w-full text-sm text-gray-800 bg-gray-100 focus:bg-transparent px-4 py-3.5 rounded-md outline-blue-600" |attr:"placeholder:Username" }}
           </div>
 
           <div class="mt-4">
-            {{ form.first_name.errors }}
+            {{ user_form.first_name.errors }}
             <label class="text-gray-800 text-[15px] mb-2 block">First Name</label>
-            {{ form.first_name }}
+            {{ user_form.first_name|add_class:"w-full text-sm text-gray-800 bg-gray-100 focus:bg-transparent px-4 py-3.5 rounded-md outline-blue-600" |attr:"placeholder:First Name" }}
           </div>
 
           <div class="mt-4">
-            {{ form.last_name.errors }}
+            {{ user_form.last_name.errors }}
             <label class="text-gray-800 text-[15px] mb-2 block">Last Name</label>
-            {{ form.last_name }}
+            {{ user_form.last_name |add_class:"w-full text-sm text-gray-800 bg-gray-100 focus:bg-transparent px-4 py-3.5 rounded-md outline-blue-600" |attr:"placeholder:Last Name" }}
           </div>
 
           <div class="mt-4">
-            {{ form.phone_number.errors }}
+            {{ user_form.phone_number.errors }}
             <label class="text-gray-800 text-[15px] mb-2 block">Phone</label>
-            {{ form.phone_number }}
+            {{ user_form.phone_number |add_class:"w-full text-sm text-gray-800 bg-gray-100 focus:bg-transparent px-4 py-3.5 rounded-md outline-blue-600" |attr:"placeholder:Phone"  }}
           </div>
 
           <div class="mt-4">
-            {{ form.email.errors }}
+            {{ user_form.email.errors }}
             <label class="text-gray-800 text-[15px] mb-2 block">Email</label>
-            {{ form.email }}
+            {{ user_form.email|add_class:"w-full text-sm text-gray-800 bg-gray-100 focus:bg-transparent px-4 py-3.5 rounded-md outline-blue-600" |attr:"placeholder:Email"  }}
           </div>
 
           <div class="mt-4">
-            {{ form.password.errors }}
-            <label class="text-gray-800 text-[15px] mb-2 block">Password</label>
-            {{ form.password }}
-          </div>
-
-          <div class="mt-4">
-            {{ form.address.errors }}
+            {{ user_form.address.errors }}
             <label class="text-gray-800 text-[15px] mb-2 block">Address</label>
-            {{ form.address }}
+            {{ user_form.address|add_class:"w-full text-sm text-gray-800 bg-gray-100 focus:bg-transparent px-4 py-3.5 rounded-md outline-blue-600" |attr:"placeholder:Address"  }}
           </div>
+          <div class="mt-4">
+            {{ user_form.password1.errors }}
+            <label class="text-gray-800 text-[15px] mb-2 block">Password</label>
+            {{ user_form.password1 |add_class:"w-full text-sm text-gray-800 bg-gray-100 focus:bg-transparent px-4 py-3.5 rounded-md outline-blue-600" |attr:"placeholder:Password"  }}
+          </div>
+          <div class="mt-4">
+            {{ user_form.password2.errors }}
+            <label class="text-gray-800 text-[15px] mb-2 block">Password Confirm</label>
+            {{ user_form.password2 |add_class:"w-full text-sm text-gray-800 bg-gray-100 focus:bg-transparent px-4 py-3.5 rounded-md outline-blue-600" |attr:"placeholder:Password Confirm"  }}
+          </div>
+
 
           <div class="mb-8">
             <p class="flex justify-end mt-4 text-sm text-gray-800">

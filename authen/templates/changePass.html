@@ -1,0 +1,55 @@
+{% extends "layout.html" %}
+{% load widget_tweaks %}
+{% block nav %}{% include 'nav.html' %}{% endblock nav %}
+{% block content %}
+  <body class="bg-gray-100">
+    <div class="container mx-auto mt-10">
+      <div class="max-w-md p-8 mx-auto bg-white rounded-lg shadow-md">
+        <h1 class="mb-6 text-2xl font-bold text-center">เปลี่ยนรหัสผ่าน</h1>
+        <form method="POST">
+          {% csrf_token %}
+          <div>
+            {% for error in form.old_password.errors %}
+              <div class="text-red-600">{{ error }}</div>
+            {% endfor %}
+            <label class="text-gray-800 text-[15px] mb-2 block">รหัสผ่านเดิม</label>
+            {{ form.old_password|add_class:'w-full text-sm text-gray-800 bg-gray-100 focus:bg-transparent px-4 py-3.5 rounded-md outline-blue-600'|attr:'placeholder:รหัสผ่านเดิม' }}
+          </div>
+          <div class="mt-4">
+            {% for error in form.new_password1.errors %}
+              <div class="text-red-600">{{ error }}</div>
+            {% endfor %}
+            <label class="text-gray-800 text-[15px] mb-2 block">รหัสผ่านใหม่</label>
+            {{ form.new_password1|add_class:'w-full text-sm text-gray-800 bg-gray-100 focus:bg-transparent px-4 py-3.5 rounded-md outline-blue-600'|attr:'placeholder:รหัสผ่านใหม่' }}
+          </div>
+          <div class="mt-4">
+            {% for error in form.new_password2.errors %}
+              <div class="text-red-600">{{ error }}</div>
+            {% endfor %}
+            <label class="text-gray-800 text-[15px] mb-2 block">ยืนยันรหัสผ่านใหม่</label>
+            {{ form.new_password2|add_class:'w-full text-sm text-gray-800 bg-gray-100 focus:bg-transparent px-4 py-3.5 rounded-md outline-blue-600'|attr:'placeholder:ยืนยันรหัสผ่านใหม่' }}
+          </div>
+
+          <button type="submit" class="w-full px-4 py-2 mt-6 text-white transition duration-200 bg-blue-600 rounded-md hover:bg-blue-700">บันทึก</button>
+        </form>
+
+        {% if message %}
+        <script>
+            iconType = "{{ message }}" == "ผิดพลาดในการเปลี่ยนรหัสผ่าน!" ? "error" : "success";
+            Swal.fire({
+            title: "Notification",
+            text: "{{ message }}",
+            icon: iconType
+            }).then((result) => {
+              if (result.isConfirmed) {
+                  if (iconType === "success") {
+                      window.location.href = "{% url 'login' %}";
+                  }
+              }
+          });
+        </script>
+        {% endif %}
+      </div>
+    </div>
+  </body>
+{% endblock content %}

@@ -8,9 +8,11 @@
     }
 </style>
 {% endblock head %}
+{% block nav %}{% include 'nav.html' %}{% endblock nav %}
+
 {% block content %}
 <body>
-    <div class="px-5 py-2">
+    <div class="px-5 py-5">
         <div class="grid grid-cols-2">
             <p class="py-5 text-4xl font-bold uppercase">WELCOME {{user.username}}</p>
             <div class="flex justify-end">
@@ -30,7 +32,6 @@
         </div>
 
         <div class="grid grid-cols-4 gap-8">
-            <!-- Sidebar Filter Section -->
             <div class="col-span-1 p-6 bg-white rounded shadow">
                 <div class="flex items-center mb-4">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 text-gray-500">
@@ -38,9 +39,7 @@
                     </svg>
                     <p class="ml-2 text-lg font-semibold">ค้นหาแบบละเอียด</p>
                 </div>
-                
                 <form method="GET" action="{% url 'RentalSearch' start_date=start_date end_date=end_date %}">
-                    {% comment %} {% csrf_token %} {% endcomment %}
                     <div class="py-3">
                         <p class="mb-2 text-lg font-medium">หมวดหมู่</p>
                         {% for cates in cate %}
@@ -104,32 +103,41 @@
             </div>
 
             <div class="col-span-3 p-6 bg-white rounded-lg shadow-md">
-                <div class="grid grid-cols-3 gap-7">
-                    {% for i in cars %}
-                    <div class="w-full max-w-sm transition duration-300 bg-white border border-gray-200 rounded-lg shadow-lg hover:bg-gray-50">
-                        <img class="p-8 rounded-t-lg" src="{{ i.image }}" alt="product image" />
-                        <div class="px-5 pb-5">
-                            <div class="flex items-center justify-between mb-3">
-                                <h5 class="font-semibold tracking-tight text-gray-900 text-md">{{ i.make }} {{ i.model }} {{ i.year }}</h5>
-                                <a href="{% url 'CarDetail' pk=i.id %}">
-                                    <div class="text-gray-500">
-                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                            stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-                                            <path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z" />
-                                            <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
-                                        </svg>
-                                    </div>
-                                </a>
-                            </div>
-                            <div class="flex items-center justify-between">
-                                <span class="text-lg font-bold text-gray-900">{{ i.price_per_day|intcomma }}/day</span>
-                                <a href="{% url 'confirm' pk=i.id %}" onclick="setCar()"
+                {% if cars %}
+                    <div class="grid grid-cols-3 gap-7">
+                        {% for i in cars %}
+                        <div class="w-full max-w-sm transition duration-300 bg-white border border-gray-200 rounded-lg shadow-lg hover:bg-gray-50">
+                            <img class="p-8 rounded-t-lg" src="{{ i.image }}" alt="product image" />
+                            <div class="px-5 pb-5">
+                                <div class="flex items-center justify-between mb-3">
+                                    <h5 class="font-semibold tracking-tight text-gray-900 text-md">{{ i.make }} {{ i.model }} {{ i.year }}</h5>
+                                    <a href="{% url 'CarDetail' pk=i.id start_date=start_date end_date=end_date %}">
+                                        <div class="text-gray-500">
+                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                                stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                                                <path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z" />
+                                                <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+                                            </svg>
+                                        </div>
+                                    </a>
+                                </div>
+                                <div class="flex items-center justify-between">
+                                    <span class="text-lg font-bold text-gray-900">{{ i.price_per_day|intcomma }}/day</span>
+                                    <a href="{% url 'confirm' pk=i.id %}" onclick="setCar()" 
+                                    data-car-id="{{ i.id }}" 
+                                    data-car-make="{{ i.make }}" 
+                                    data-car-model="{{ i.model }}" 
+                                    data-car-year="{{ i.year }}" 
+                                    data-car-price="{{ i.price_per_day }}"
                                     class="px-4 py-2 text-sm text-white transition bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300">เช่า</a>
+                                </div>
                             </div>
                         </div>
+                        {% endfor %}
                     </div>
-                    {% endfor %}
-                </div>
+                {% else %}
+                    <p class="text-lg font-bold text-red-600">{{message}}</p>
+                {% endif %}
             </div>
         </div>
     </div>
@@ -142,5 +150,29 @@
     rangeInput.addEventListener('input', function() {
         rangeValue.textContent = `$${this.value}`;
     });
+    function setCar() {
+        const carID = event.target.getAttribute('data-car-id');
+        const carMake = event.target.getAttribute('data-car-make');
+        const carModel = event.target.getAttribute('data-car-model');
+        const carYear = event.target.getAttribute('data-car-year');
+        const carPrice = event.target.getAttribute('data-car-price');
+        const startDate = "{{start_date}}";
+        const endDate = "{{end_date}}";
+
+        const car = {
+                id: carID,
+                make: carMake,
+                model: carModel,
+                year: carYear,
+                price: carPrice,
+                start_date: startDate,
+                end_date: endDate
+            };
+    
+        let selectedCars = JSON.parse(localStorage.getItem("selectedCars")) || []
+        selectedCars.push(car);
+        localStorage.setItem("selectedCars", JSON.stringify(selectedCars));    
+    }
+    
 </script>
 {% endblock content %}

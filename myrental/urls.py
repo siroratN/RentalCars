@@ -4,14 +4,15 @@ from django.views.generic import TemplateView
 from django.urls import *
 
 urlpatterns = [
-    path("rental/", views.RentalView.as_view(), name="Rental"),
+    path("rental/", views.RentalViewFirst.as_view(), name="Rental"),
     path("rental/<str:start_date>/<str:end_date>/", views.FilterView.as_view(), name="RentalSearch"),
     path("rental/<str:start_date>/<str:end_date>/search/", views.SearchView.as_view(), name="RentalSearchBar"),
-    path("car/<int:pk>/detail/", views.CarDetail.as_view(), name="CarDetail"),
+    path("car/detail/<int:pk>/<str:start_date>/<str:end_date>/", views.CarDetail.as_view(), name="CarDetail"),
     path("confirm/<int:pk>/", views.ConfirmBill.as_view(), name="confirm"),
     path("date/", views.DateRental.as_view(), name="Date"),
-    path("create-checkout-session/<int:pk>/", views.CreateCheckoutSessionView.as_view(), name="create-checkout-session"),
+    path("create-checkout-session/", views.CreateCheckoutSessionView.as_view(), name="create-checkout-session"),
     path("success/", views.Success.as_view(), name="success"),
+    path("success/detail/", views.Success.as_view(), name="success"),
     path("cancel/", views.Cancel.as_view(), name="cancel"),
 
 ]

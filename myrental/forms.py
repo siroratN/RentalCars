@@ -5,18 +5,12 @@ from django.utils import timezone
 
 class DateRangeForm(forms.Form):
     start_date = forms.DateField(
-        widget=forms.TextInput(attrs={
-            'class': 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5',
-            'placeholder': 'Select date start',
-            'id': 'start_date',
+        widget=forms.DateInput(attrs={
             'type': 'date'
         })
     )
     end_date = forms.DateField(
-        widget=forms.TextInput(attrs={
-            'class': 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5',
-            'placeholder': 'Select date end',
-            'id': 'end_date',
+        widget=forms.DateInput(attrs={
             'type': 'date'
         })
     )

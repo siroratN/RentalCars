@@ -1,1 +1,17 @@
-cancle
+{% extends 'layout.html' %}
+{% block title %}{% endblock title %}
+{% block nav %}{% include 'nav.html' %}{% endblock nav %}
+{% block content %}
+<div class="flex items-center justify-center h-screen">
+    <div class="p-10 text-center bg-gray-200 rounded-lg shadow-lg">
+        <h2 class="text-3xl font-bold text-red-600">การชำระเงินถูกยกเลิก</h2>
+        <p class="mt-4 text-gray-700">ขออภัย การชำระเงินของคุณถูกยกเลิก หากคุณต้องการทำรายการใหม่ กรุณาลองอีกครั้ง</p>
+        
+        <div class="mt-6">
+            <a href="{% url 'Date' %}" class="px-4 py-2 text-white bg-blue-600 rounded hover:bg-blue-700">
+                กลับไปหน้าแรก
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock content %}
