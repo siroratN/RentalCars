@@ -1,0 +1,79 @@
+{% extends "layout.html" %}
+
+{% block title %}Manage Rent{% endblock %}
+
+{% block content %}
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        .all {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 30px;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse; /* Prevents borders from doubling */
+        }
+
+        th {
+            padding: 10px;
+            text-align: center;
+            background-color: #FFFFFF; /* White background for th */
+        }
+
+        td {
+            padding: 10px;
+            text-align: center;
+        }
+
+    </style>
+    <div class="head text-center mt-12">
+        <h1>ข้อมูลการจองรถ</h1>
+    </div>
+
+    <div class="box p-8 m-12 border border-gray-300 rounded-lg shadow-lg">
+        <div class="flex justify-between mb-4">
+            <a href="{% url 'rental_info' %}" class="text-blue-600 hover:underline mx-5">Refresh</a>
+            <form method="GET" action="{% url 'rental_search' %}">
+                <div class="flex">
+                    <input name='search' type="text" id="searchInput" placeholder="ค้นหาข้อมูล..." class="border rounded-lg px-4 py-2 w-2/4 focus:outline-none focus:ring-2 focus:ring-blue-400">
+                    <button class="ml-2 bg-blue-500 text-white rounded-lg px-4 py-2 hover:bg-blue-600 transition duration-300">Search</button>
+                </div>
+            </form>
+        </div>
+        <table class="table-auto w-full">
+            <thead>
+                <tr>
+                    <th>รถ</th>
+                    <th>ลูกค้า</th>
+                    <th>วันเริ่มต้น</th>
+                    <th>วันสิ้นสุด</th>
+                    <th>ราคา</th>
+                    <th>สถานะ</th>
+                </tr>
+            </thead>
+            <tbody id="tableBody">
+                {% for rental in rentals %}
+                    {% for rental_car in rental.rental_car_set.all %}
+                        <tr class="hover:bg-gray-50">
+                            <td>{{ rental_car.car.make }} {{ rental_car.car.model }}</td>
+                            <td>{{ rental.customer.user.username }}</td>
+                            <td>{{ rental_car.start_date }}</td>
+                            <td>{{ rental_car.end_date }}</td>
+                            <td>{{ rental.total_price }}</td>
+                            <td>{{ rental.status }}</td>
+                        </tr>
+                    {% endfor %}
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}

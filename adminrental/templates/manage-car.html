@@ -1,0 +1,119 @@
+{% extends "layout.html" %}
+
+{% block title %}Car Manage{% endblock %}
+
+{% block content %}
+    <style>
+        .box-category {
+            display: grid-column;
+            margin-top: 5%;
+            column-gap: 50px;
+            background-color: #ffffff;
+            text-align: center;
+        }
+        .box {
+            background-color: #ffffff;
+            text-align: center;
+            border-radius: 25px;
+            margin-left: 5%;
+            margin-right: 5%;
+            box-shadow: 0 0 50px 0 rgba(0, 0, 0, 0.2);
+        }
+        .box:first-child {
+            margin-left: 5%;
+        }
+        .box:last-child {
+            margin-right: 5%;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse; /* Prevents borders from doubling */
+        }
+
+        th {
+            padding: 10px;
+            text-align: center;
+            background-color: #FFFFFF; /* White background for th */
+        }
+
+        td {
+            padding: 10px;
+            text-align: center;
+            /* background-color: rgba(0, 0, 0, 0.1); */
+        }
+
+        tr:first-child {
+            border-top-left-radius: 15px; /* Round top-left corner */
+        }
+
+        tr:last-child {
+            border-top-right-radius: 15px; /* Round top-right corner */
+        }
+
+        tr:last-child td:first-child {
+            border-bottom-left-radius: 15px; /* Round bottom-left corner */
+        }
+
+        tr:last-child td:last-child {
+            border-bottom-right-radius: 15px; /* Round bottom-right corner */
+        }
+
+    </style>
+    
+    <div class="head" style="text-align: center; margin-top: 50px;">
+        <h1 class="">CATEGORY</h1>
+    </div>
+    
+    <div class="grid grid-cols-5 gap-5" style="margin: 5% 10% 10% 10%;">
+        {% for catcar in category %}
+        <form method="GET" action="{% url 'catcar_id' pk=catcar.id %}">
+            <div class="max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
+                <button type="submit">
+                    <img class="rounded-t-lg" src="{{ catcar.image }}" alt="" />
+                </button>
+            </div>
+        </form>
+        {% endfor %}
+    </div>
+    <div class="grid grid-cols-5 -mt-28 mx-32">
+        {% for catcar in category %}
+            {% if catcar.name == catpk.name %}
+                <p class="text-center bg-clip-text text-transparent bg-gradient-to-r from-pink-500 to-violet-500">{{ catcar.name }}</p>
+            {% else %}
+                <p class="text-center">{{ catcar.name }}</p>
+            {% endif %}
+        {% endfor %}
+
+    </div>
+    <div class="box my-10 p-12 border border-gray-300 rounded-lg shadow-lg">
+        <div class="flex justify-between mb-3">
+            <a href="{% url 'manage_car' %}" class="text-blue-600 hover:underline ml-16">Refresh</a>
+            <p class="ml-10 text-2xl bg-clip-text text-transparent bg-gradient-to-r from-pink-500 to-violet-500">{{catpk.name}}</p>
+            <form method="GET" action="{% url 'category_search' pk=catpk.id %}">
+                <div class="flex">
+                    <input name="search" type="text" id="searchInput" placeholder="ค้นหาข้อมูล..." class="border rounded-lg px-4 py-2 w-2/4 focus:outline-none focus:ring-2 focus:ring-blue-400">
+                    <button type="submit" class="ml-5 bg-blue-500 text-white rounded-lg px-4 py-1 hover:bg-blue-600 transition duration-300">Search</button>
+                </div>
+            </form>
+        </div>
+
+        <table>
+            <thead>
+                <tr class="">
+                    <th class="bg-clip-text text-transparent bg-gradient-to-r from-pink-500 to-violet-500">Brand</th>
+                    <th class="bg-clip-text text-transparent bg-gradient-to-r from-pink-500 to-violet-500">Price Per Day</th>
+                    <th class="bg-clip-text text-transparent bg-gradient-to-r from-pink-500 to-violet-500">Description</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for carlist in carlists %}
+                <tr class="hover:bg-gray-50">
+                    <td>{{ carlist.make }}</td>
+                    <td>{{ carlist.price_per_day }}</td>
+                    <td><a href="{% url 'rental_info'  %}" class="border rounded-lg px-4 py-2 w-2/4 text-blue-600 hover:underline">Details</a></td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}
