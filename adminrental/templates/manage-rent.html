@@ -2,22 +2,11 @@
 
 {% block title %}Manage Rent{% endblock %}
 
+{% block Head %}{% endblock %}
+
 {% block content %}
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        .all {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            padding: 30px;
-        }
-        
+        /* Additional styles can be added here if needed */
         table {
             width: 100%;
             border-collapse: collapse; /* Prevents borders from doubling */
@@ -33,8 +22,8 @@
             padding: 10px;
             text-align: center;
         }
-
     </style>
+
     <div class="head text-center mt-12">
         <h1>ข้อมูลการจองรถ</h1>
     </div>
@@ -52,12 +41,12 @@
         <table class="table-auto w-full">
             <thead>
                 <tr>
-                    <th>รถ</th>
-                    <th>ลูกค้า</th>
-                    <th>วันเริ่มต้น</th>
-                    <th>วันสิ้นสุด</th>
-                    <th>ราคา</th>
-                    <th>สถานะ</th>
+                    <th class="bg-slate-400 border">รถ</th>
+                    <th class="bg-slate-400 border">ลูกค้า</th>
+                    <th class="bg-slate-400 border">วันเริ่มต้น</th>
+                    <th class="bg-slate-400 border">วันสิ้นสุด</th>
+                    <th class="bg-slate-400 border">ราคา</th>
+                    <th class="bg-slate-400 border">สถานะ</th>
                 </tr>
             </thead>
             <tbody id="tableBody">
