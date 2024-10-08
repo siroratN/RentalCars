@@ -3,7 +3,7 @@ from django.contrib.auth.models import User
 
 class CategoryCar(models.Model):
     name = models.CharField(max_length=50)
-    image = models.CharField(max_length=100)
+    image = models.CharField(max_length=500)
     description = models.CharField(max_length=100)
     
 class Feature(models.Model):
