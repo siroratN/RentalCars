@@ -41,12 +41,11 @@ class SelectCategory(View):
 class CategorySearch(View):
     def get(self, request, pk):
         print(pk)
-        search = request.POST.get('search')
+        search = request.GET.get('search')
         category = CategoryCar.objects.all()
         catpk = CategoryCar.objects.get(id=pk)
         print(catpk)
-        carlists = Car.objects.filter(category_id=pk, make__icontains='t')
-        # carlists = Car.objects.filter(category=1)
+        carlists = Car.objects.filter(category_id=pk, make__icontains=search)
         return render(request, "manage-car.html", {'category' : category,
                                                    'carlists' : carlists,
                                                    'catpk' : catpk})
