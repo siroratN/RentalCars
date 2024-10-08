@@ -17,7 +17,6 @@ class RentalSearch(View):
     def get(self, request):
         search = request.GET.get('search')
         rental = Rental.objects.filter(rental_car__car__make__icontains=search)
-        # rental = Rental.objects.filter(rental_car__icontains=search)
         return render(request, "manage-rent.html", {'rentals': rental})
     
 class ManageCar(View):
@@ -41,11 +40,13 @@ class SelectCategory(View):
 
 class CategorySearch(View):
     def get(self, request, pk):
-        search = request.GET.get('search')
         print(pk)
+        search = request.POST.get('search')
         category = CategoryCar.objects.all()
-        catpk = Car.objects.filter(category=pk)
-        carlists = CategoryCar.objects.filter(car__make__icontains=search)
+        catpk = CategoryCar.objects.get(id=pk)
+        print(catpk)
+        carlists = Car.objects.filter(category_id=pk, make__icontains='t')
+        # carlists = Car.objects.filter(category=1)
         return render(request, "manage-car.html", {'category' : category,
                                                    'carlists' : carlists,
                                                    'catpk' : catpk})
