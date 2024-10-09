@@ -17,8 +17,12 @@ class LoginView(View):
         form = AuthenticationForm(data=request.POST)
         if form.is_valid():
             user = form.get_user() 
-            login(request,user)
-            return redirect('Date')  
+            if user.is_staff:
+                login(request, user)
+                return redirect('manage_car')
+            else:
+                login(request, user)
+                return redirect('Date')
         return render(request,'login.html', {"form":form})
 
 
@@ -32,8 +36,6 @@ class RegisterView(View):
         user_form = UserRegistrationForm(request.POST)        
         if user_form.is_valid():
             user = user_form.save()
-            #user.set_password(user_form.cleaned_data['password'])
-            #user.save()
             customer = Customer.objects.create(
                 user=user,
                 phone_number=user_form.cleaned_data['phone_number'],
@@ -49,6 +51,32 @@ class LogoutView(View):
     def get(self, request):
         logout(request)
         return render(request, 'login.html')
+    
+class ProfileView(View):
+    def get(self, request):
+        user_form = UserProfileForm(instance=request.user)
+        customer_form = CustomerProfileForm(instance=request.user.customer)
+        
+        return render(request, 'profile.html', {
+            'user_form': user_form,
+            'customer_form': customer_form
+        })
+    
+    def post(self, request):
+        user_form = UserProfileForm(request.POST, instance=request.user)
+        customer_form = CustomerProfileForm(request.POST, instance=request.user.customer)
+
+        if user_form.is_valid() and customer_form.is_valid():
+            user_form.save()
+            customer_form.save()
+            message = 'บันทึกการเปลี่ยนแปลงเรียบร้อย!'
+        else:
+            message = 'ผิดพลาดในการบันทึก!'
+        return render(request, 'profile.html', {
+            'user_form': user_form,
+            'customer_form': customer_form,
+            'message': message
+        })
     
 class PasswordChangeView(View):
     def get(self, request):

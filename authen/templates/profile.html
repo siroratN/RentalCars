@@ -1,0 +1,67 @@
+{% extends "layout.html" %}
+{% load widget_tweaks %}
+{% block nav %}{% include 'nav.html' %}{% endblock nav %}
+{% block content %}
+<body class="bg-gray-100">
+    <div class="mx-auto mt-10">
+        <div class="max-w-md p-8 mx-auto bg-white rounded-lg shadow-md">
+            <h1 class="mb-6 text-2xl font-bold text-center">โปรไฟล์ผู้ใช้</h1>
+            <form method="POST">
+                {% csrf_token %}
+                <div class="mt-4">
+                    <div class="text-red-600">{{ user_form.first_name.errors }}</div>
+                    <label class="text-gray-800 text-[15px] mb-2 block">ชื่อ</label>
+                    {{ user_form.first_name|add_class:'w-full text-sm text-gray-800 bg-gray-100 px-4 py-3.5 rounded-md outline-blue-600' }}
+                </div>
+
+                <div class="mt-4">
+                    <div class="text-red-600">{{ user_form.last_name.errors }}</div>
+                    <label class="text-gray-800 text-[15px] mb-2 block">นามสกุล</label>
+                    {{ user_form.last_name|add_class:'w-full text-sm text-gray-800 bg-gray-100 px-4 py-3.5 rounded-md outline-blue-600' }}
+                </div>
+
+                <div class="mt-4">
+                    <div class="text-red-600">{{ user_form.email.errors }}</div>
+                    <label class="text-gray-800 text-[15px] mb-2 block">อีเมลล์</label>
+                    {{ user_form.email|add_class:'w-full text-sm text-gray-800 bg-gray-100 px-4 py-3.5 rounded-md outline-blue-600' }}
+                </div>
+
+                <div class="mt-4">
+                    <div class="text-red-600">{{ customer_form.phone_number.errors }}</div>
+                    <label class="text-gray-800 text-[15px] mb-2 block">เบอร์โทรศัพท์</label>
+                    {{ customer_form.phone_number|add_class:'w-full text-sm text-gray-800 bg-gray-100 px-4 py-3.5 rounded-md outline-blue-600' }}
+                </div>
+
+                <div class="mt-4">
+                    <div class="text-red-600">{{ customer_form.address.errors }}</div>
+                    <label class="text-gray-800 text-[15px] mb-2 block">ที่อยู่</label>
+                    {{ customer_form.address|add_class:'w-full text-sm text-gray-800 bg-gray-100 px-4 py-3.5 rounded-md outline-blue-600' }}
+                </div>
+
+                <button type="submit" class="w-full px-4 py-2 mt-6 text-white transition duration-200 bg-blue-600 rounded-md hover:bg-blue-700">บันทึกการเปลี่ยนแปลง</button>
+            </form>
+
+            <div class="mt-4 text-center">
+                <a href="{% url 'pass' %}" class="inline-block w-full px-4 py-2 text-white transition duration-200 bg-green-600 rounded-md hover:bg-green-700">เปลี่ยนรหัสผ่าน</a>
+            </div>
+
+            {% if message %}
+            <script>
+                const iconType = "{{ message }}" == "บันทึกการเปลี่ยนแปลงเรียบร้อย!" ? "success" : "error";
+                Swal.fire({
+                    title: "Notification",
+                    text: "{{ message }}",
+                    icon: iconType
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        if (iconType === "success") {
+                            window.location.href = "{% url 'profile' %}"; // เปลี่ยน URL ตามต้องการ
+                        }
+                    }
+                });
+            </script>
+            {% endif %}
+        </div>
+    </div>
+</body>
+{% endblock content %}
