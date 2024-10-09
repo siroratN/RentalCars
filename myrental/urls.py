@@ -1,7 +1,9 @@
+from django.conf import settings
 from . import views
 from django.urls import include, path
 from django.views.generic import TemplateView
 from django.urls import *
+from django.conf.urls.static import static
 
 urlpatterns = [
     path("rental/", views.RentalViewFirst.as_view(), name="Rental"),
@@ -16,3 +18,6 @@ urlpatterns = [
     path("cancel/", views.Cancel.as_view(), name="cancel"),
 
 ]
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

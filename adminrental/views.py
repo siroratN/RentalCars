@@ -3,10 +3,10 @@ from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.urls import reverse
 from django.views import View
 from .views import *
-from .models import *
-from .forms import *
+from adminrental.forms import *
 from django.shortcuts import get_object_or_404, redirect, render
 from myrental.models import *
+from django.contrib import messages
 
 class RentalListView(View):
     def get(self, request):
@@ -50,10 +50,49 @@ class CategorySearch(View):
                                                    'carlists' : carlists,
                                                    'catpk' : catpk})
 
+
 class AddCar(View):
     def get(self, request):
-        return render(request, "add-car.html", )
-    
+        form = UpdateCarForm()
+        return render(request, "add-car.html", {"form": form})
+
+    def post(self, request, pk):
+        form = UpdateCarForm(request.POST, request.FILES)
+
+        if form.is_valid():
+            form.save()
+            return redirect('manage_car')
+
+        return render(request, "add-car.html", {"form": form})
+
 class EditCar(View):
-    def get(self, request):
-        return render(request, "edit-car.html", )
+    def get(self, request, pk):
+        car = Car.objects.get(pk=pk)
+        form = UpdateCarForm(instance=car)
+        return render(request, "edit-car.html", {
+                               "form": form,
+                               "car": car
+                               })
+
+    def post(self, request, pk):
+        car = Car.objects.get(pk=pk)
+        form = UpdateCarForm(request.POST, request.FILES, instance=car)
+
+        if form.is_valid():
+            form.save()
+            return redirect('manage_car')
+
+        return render(request, "edit-car.html", {
+            "form": form,
+            "car": car
+        })
+    
+class DeleteCar(View):
+    def delete(self, request, pk):
+            print(pk)
+            car = Car.objects.get(pk=pk)
+            car.delete()
+            print("xxx")
+            return JsonResponse({'status': 'success'})  # Redirect after successful deletion
+        # Redirect if car does not exist
+        

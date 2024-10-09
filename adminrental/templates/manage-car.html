@@ -1,8 +1,6 @@
 {% extends "layout.html" %}
-
 {% block title %}Car Manage{% endblock %}
-
-{% block content %}
+{% block head %}
     <style>
         .box-category {
             display: grid-column;
@@ -59,11 +57,13 @@
         }
 
     </style>
-    
+{% endblock head %}
+{% block nav %}{% include 'navadmin.html' %}{% endblock nav %}
+{% block content %}    
     <div class="head" style="text-align: center; margin-top: 50px;">
         <h1 class="">CATEGORY</h1>
     </div>
-    
+
     <div class="grid grid-cols-5 gap-5" style="margin: 5% 10% 10% 10%;">
         {% for catcar in category %}
         <form method="GET" action="{% url 'catcar_id' pk=catcar.id %}">
@@ -75,7 +75,7 @@
         </form>
         {% endfor %}
     </div>
-    
+
     <div class="grid grid-cols-5 mx-32 -mt-28">
         {% for catcar in category %}
             {% if catcar.name == catpk.name %}
@@ -94,8 +94,12 @@
                 <div class="flex">
                     <input name="search" type="text" id="searchInput" placeholder="ค้นหาข้อมูล..." class="w-2/4 px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400">
                     <button type="submit" class="px-4 py-1 ml-5 text-white transition duration-300 bg-blue-500 rounded-lg hover:bg-blue-600">Search</button>
-                </div>
-            </form>            
+                </form>
+                <form method="POST" action="{% url 'add_car' pk=catpk.id %}">
+                    {% csrf_token %}
+                    <button type="submit" class="px-4 py-1 ml-5 text-white transition duration-300 bg-green-500 rounded-lg hover:bg-green-600">ADD CAR</button>
+                </form>
+                </div>          
         </div>
 
         <table>
@@ -111,7 +115,7 @@
                 <tr class="hover:bg-gray-50">
                     <td>{{ carlist.make }}</td>
                     <td>{{ carlist.price_per_day }}</td>
-                    <td><a href="{% url 'rental_info'  %}" class="w-2/4 px-4 py-2 text-blue-600 border rounded-lg hover:underline">Details</a></td>
+                    <td><a href="{% url 'edit_car' pk=carlist.id %}" class="w-2/4 px-4 py-2 text-blue-600 border rounded-lg hover:underline">Details</a></td>
                 </tr>
                 {% endfor %}
             </tbody>
