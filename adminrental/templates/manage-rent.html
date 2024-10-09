@@ -1,10 +1,6 @@
 {% extends "layout.html" %}
-
-{% block title %}Manage Rent{% endblock %}
-
-{% block Head %}{% endblock %}
-
-{% block content %}
+{% block title %}Manage Rent{% endblock title %}
+{% block head %}
     <style>
         /* Additional styles can be added here if needed */
         table {
@@ -23,6 +19,10 @@
             text-align: center;
         }
     </style>
+{% endblock head %}
+{% block nav %}{% include 'navadmin.html' %}{% endblock nav %}
+{% block content %}
+    
 
     <div class="head text-center mt-12">
         <h1>ข้อมูลการจองรถ</h1>
@@ -65,4 +65,4 @@
             </tbody>
         </table>
     </div>
-{% endblock %}
+{% endblock content %}

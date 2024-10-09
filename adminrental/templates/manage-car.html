@@ -1,33 +1,6 @@
 {% extends "layout.html" %}
-
 {% block title %}Car Manage{% endblock %}
-
-
-<div class="head" style="text-align: center; margin-top: 50px;">
-    <h1 class="">CATEGORY</h1>
-</div>
-
-<div class="grid grid-cols-5 gap-5" style="margin: 5% 10% 10% 10%;">
-    {% for catcar in category %}
-    <form method="GET" action="{% url 'catcar_id' pk=catcar.id %}">
-        <div class="max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
-            <button type="submit">
-                <img class="rounded-t-lg" src="{{ catcar.image }}" alt="" />
-                <p>{{ catcar.desciption }}</p>
-            </button>
-        </div>
-    </form>
-    {% endfor %}
-</div>
-<div class="grid grid-cols-5 -mt-28 mx-32">
-    {% for catcar in category %}
-        {% if catcar.name == catpk.name %}
-            <p class="text-center bg-clip-text text-transparent bg-gradient-to-r from-pink-500 to-violet-500">{{ catcar.name }}</p>
-        {% else %}
-            <p class="text-center">{{ catcar.name }}</p>
-        {% endif %}
-    {% endfor %}
-{% block content %}
+{% block head %}
     <style>
         .box-category {
             display: grid-column;
@@ -84,11 +57,13 @@
         }
 
     </style>
-    
+{% endblock head %}
+{% block nav %}{% include 'navadmin.html' %}{% endblock nav %}
+{% block content %}    
     <div class="head" style="text-align: center; margin-top: 50px;">
         <h1 class="">CATEGORY</h1>
     </div>
-    
+
     <div class="grid grid-cols-5 gap-5" style="margin: 5% 10% 10% 10%;">
         {% for catcar in category %}
         <form method="GET" action="{% url 'catcar_id' pk=catcar.id %}">
@@ -100,7 +75,7 @@
         </form>
         {% endfor %}
     </div>
-    
+
     <div class="grid grid-cols-5 mx-32 -mt-28">
         {% for catcar in category %}
             {% if catcar.name == catpk.name %}
