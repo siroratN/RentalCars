@@ -92,20 +92,21 @@
     <div class="grid grid-cols-5 gap-5" style="margin: 5% 10% 10% 10%;">
         {% for catcar in category %}
         <form method="GET" action="{% url 'catcar_id' pk=catcar.id %}">
-            <div class="max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
+            <div class="max-w-sm ">
                 <button type="submit">
-                    <img class="rounded-t-lg" src="{{ catcar.image }}" alt="" />
+                    <img class="object-cover w-full h-48 rounded-lg" src="{{ catcar.image }}" alt="" />
                 </button>
             </div>
         </form>
         {% endfor %}
     </div>
+    
     <div class="grid grid-cols-5 mx-32 -mt-28">
         {% for catcar in category %}
             {% if catcar.name == catpk.name %}
-                <p class="text-center text-transparent bg-clip-text bg-gradient-to-r from-pink-500 to-violet-500">{{ catcar.name }}</p>
+                <p class="text-center text-transparent uppercase bg-clip-text bg-gradient-to-r from-pink-500 to-violet-500">{{ catcar.name }}</p>
             {% else %}
-                <p class="text-center">{{ catcar.name }}</p>
+                <p class="text-center uppercase">{{ catcar.name }}</p>
             {% endif %}
         {% endfor %}
 
