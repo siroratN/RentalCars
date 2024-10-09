@@ -64,14 +64,12 @@
       let totalPrice = 0
     
       selectedCars.forEach((car) => {
-        console.log('Raw Price:', car.price)
-        const price = Math.round(parseFloat(car.price) * 100)
-        console.log('Converted Price:', price)
+        const price = parseInt(car.price, 10)
         const startDate = new Date(car.start_date)
         const endDate = new Date(car.end_date)
         const timeDifference = endDate - startDate
         const days = Math.ceil(timeDifference / (1000 * 3600 * 24))
-        const totalCarPrice = (price / 100) * days
+        const totalCarPrice = price * days
         const row = document.createElement('tr')
         row.classList.add('bg-white', 'border-b', 'dark:bg-gray-800')
         row.innerHTML = `

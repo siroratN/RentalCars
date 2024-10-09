@@ -13,16 +13,16 @@
             <p><strong>Name:</strong> {{ rental.customer.user.first_name }} {{ rental.customer.user.last_name }}</p>
             <p><strong>Email:</strong> {{ rental.customer.user.email }}</p>
             <p><strong>Status:</strong> {{ rental.status }}</p>
-            <p><strong>Total Price:</strong> {{ rental.total_price|intcomma }} บาท</p>
+            <p><strong>Total Price:</strong> {{ rental.total_price|floatformat:0|intcomma }} บาท</p>
             
             <h3 class="mt-4 text-xl font-semibold">Rented Cars ID {{rental.id}}</h3>
             <table class="w-full mt-4 text-sm text-left text-gray-500">
                 <thead class="text-xs text-gray-700 uppercase bg-blue-400">
                     <tr>
-                        <th scope="col" class="px-4 py-2">Car ID</th>
-                        <th scope="col" class="px-4 py-2">Car Model</th>
-                        <th scope="col" class="px-4 py-2">Start Date</th>
-                        <th scope="col" class="px-4 py-2">End Date</th>
+                        <th scope="col" class="px-4 py-2">รหัสรถยนต์</th>
+                        <th scope="col" class="px-4 py-2">รถยนต์</th>
+                        <th scope="col" class="px-4 py-2">วันเริ่มต้น</th>
+                        <th scope="col" class="px-4 py-2">วันสิ้นสุด</th>
                     </tr>
                 </thead>
                 <tbody>
