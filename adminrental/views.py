@@ -6,6 +6,7 @@ from .views import *
 from adminrental.forms import *
 from django.shortcuts import get_object_or_404, redirect, render
 from myrental.models import *
+from django.contrib import messages
 
 class RentalListView(View):
     def get(self, request):
@@ -65,21 +66,33 @@ class AddCar(View):
         return render(request, "add-car.html", {"form": form})
 
 class EditCar(View):
-    def get(self, request, car_id):
-        caredit = Car.objects.get(pk=car_id)
-        form = UpdateCarForm(instance=caredit)
-        return render(request, "booking.html", {
-            "form": form,
-        })
+    def get(self, request, pk):
+        car = Car.objects.get(pk=pk)
+        form = UpdateCarForm(instance=car)
+        return render(request, "edit-car.html", {
+                               "form": form,
+                               "car": car
+                               })
 
-    def post(self, request, booking_id):
-        caredit = Car.objects.get(pk=booking_id)
-        form = UpdateCarForm(request.POST, instance=caredit)
+    def post(self, request, pk):
+        car = Car.objects.get(pk=pk)
+        form = UpdateCarForm(request.POST, request.FILES, instance=car)
 
         if form.is_valid():
             form.save()
-            return redirect('add_car')
+            return redirect('manage_car')
 
-        return render(request, "add-car.html", {
-            "form": form
+        return render(request, "edit-car.html", {
+            "form": form,
+            "car": car
         })
+    
+class DeleteCar(View):
+    def delete(self, request, pk):
+            print(pk)
+            car = Car.objects.get(pk=pk)
+            car.delete()
+            print("xxx")
+            return JsonResponse({'status': 'success'})  # Redirect after successful deletion
+        # Redirect if car does not exist
+        

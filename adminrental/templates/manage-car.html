@@ -140,7 +140,7 @@
                 <tr class="hover:bg-gray-50">
                     <td>{{ carlist.make }}</td>
                     <td>{{ carlist.price_per_day }}</td>
-                    <td><a href="" class="w-2/4 px-4 py-2 text-blue-600 border rounded-lg hover:underline">Details</a></td>
+                    <td><a href="{% url 'edit_car' pk=carlist.id %}" class="w-2/4 px-4 py-2 text-blue-600 border rounded-lg hover:underline">Details</a></td>
                 </tr>
                 {% endfor %}
             </tbody>

@@ -2,8 +2,10 @@ from django import forms
 from myrental.models import *
 
 class UpdateCarForm(forms.ModelForm):
-    image = forms.ImageField(required=False)  # Allow image upload
-
+    image = forms.ImageField(
+        widget=forms.FileInput(attrs={})  # Set your Tailwind classes here
+    )
+        
     class Meta:
         model = Car
         fields = ['make', 'model', 'year', 'price_per_day', 'description', 'category', 'feature', 'image']
@@ -16,4 +18,5 @@ class UpdateCarForm(forms.ModelForm):
         if year and year > 2024:
             raise forms.ValidationError('Year cannot be in the future.')
         return year
+
 

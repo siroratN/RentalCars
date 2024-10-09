@@ -1,3 +1,4 @@
+{% load widget_tweaks %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,205 +7,116 @@
     <title>Edit Car</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/flowbite@2.5.1/dist/flowbite.min.js"></script>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #ffffff;
-        }
-
-        ul {
-            list-style: none;
-        }
-        header {
-            display: flex;
-            padding: 1rem 0;
-            align-items: center;
-            width: 100%;
-            background-color: rgba(255, 255, 255, 0.77);
-            color: black;
-        }
-        .logo {
-            width: 50%;
-            display: flex;
-            align-items: center;
-            padding-left: 7%;
-        }
-        .logo img {
-            width: 90px;
-        }
-        .header__logo {
-            color: black;
-            font-weight: 600;
-        }
-        .nav {
-            width: 50%;
-            padding-left: 25%;
-            padding-right: 0%;
-        }
-        .nav__list {
-            display: flex;
-        }
-        .nav__item {
-            margin: 0 14px;
-        }
-        .nav__link {
-            padding: 10px 0px 5px 0px;
-            margin-left: 10px;
-            color: rgb(0, 0, 0);
-            font-size: 0.9rem;
-            font-weight: 500;
-            border-radius: 5px;
-            position: relative;
-        }
-        .nav__link::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            height: 2px;
-            background-color: rgb(0, 0, 0);
-            transform: scaleX(0);
-            transform-origin: bottom right;
-            transition: transform 0.5s ease;
-        }
-        .nav__link:hover::after {
-            transform: scaleX(1);
-            transform-origin: bottom left;
-        }
-        .all {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            padding: 30px;
-        }
-
-        .container {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            margin: 5% 10% 10% 10%;
-        }
-
-        .form-box {
-            background-color: #ffffff;
-            border-radius: 25px;
-            box-shadow: 0 0 50px 0 rgba(0, 0, 0, 0.2);
-            padding: 20px;
-            width: 400px;
-            margin-right: 20px; /* Space between form and image */
-        }
-
-        .image-box {
-            margin-top: -18%;
-            background-color: #ffffff;
-            border-radius: 25px;
-            box-shadow: 0 0 50px 0 rgba(0, 0, 0, 0.2);
-            padding: 20px;
-            width: 500px; /* Width for the image box */
-            height: 500px; /* Height for the image box */
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            overflow: hidden; /* To avoid overflow if the image is large */
-        }
-
-        .image-box img {
-            max-width: 100%; /* Responsive image */
-            max-height: 100%; /* Maintain aspect ratio */
-            border-radius: 15px; /* Rounded corners for the image */
-        }
-
-        .input-field {
-            margin-bottom: 15px; /* Spacing between input fields */
-        }
-
-        .input-field label {
-            display: block;
-            margin-bottom: 5px;
-        }
-
-        .input-field input {
-            width: 100%;
-            padding: 8px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-        }
-
-        .input-field input[type="file"] {
-            padding: 5px; /* Adjust padding for file input */
-        }
-
-        .submit-button {
-            background-color: #4CAF50;
-            color: white;
-            padding: 10px 15px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 16px;
-        }
-
-        .submit-button:hover {
-            background-color: #45a049; /* Darker shade on hover */
-        }
-    </style>
 </head>
-<body>
-    <header>
-        <div class="logo">
-            <img src="https://file.kelleybluebookimages.com/kbb/base/evox/CP/55034/2025-Honda-Civic-front_55034_032_1816x735_RE_cropped.png" alt="">
+<body class="bg-white font-sans">
+    <nav class="flex items-center justify-between w-full py-4 bg-white/80 text-black border">
+        <div class="logo flex items-center pl-7">
+            <img src="https://file.kelleybluebookimages.com/kbb/base/evox/CP/55034/2025-Honda-Civic-front_55034_032_1816x735_RE_cropped.png" alt="" class="w-24">
         </div>
-        <nav class="nav" id="nav-menu">
-            <ion-icon name="close-outline" class="header__close" id="close-menu"></ion-icon>
-            <ul class="nav__list">
-                <li class="nav__item"><a href="history.php" class="nav__link">จัดการรถ</a></li>
-                <li class="nav__item"><a href="logout.php" class="nav__link">ออกจากระบบ</a></li>
+        <nav class="flex items-center pr-7">
+            <ul class="flex space-x-4">
+                <li><a href="history.php" class="text-sm font-medium text-black hover:underline">จัดการรถ</a></li>
+                <li><a href="logout.php" class="text-sm font-medium text-black hover:underline">ออกจากระบบ</a></li>
             </ul>
         </nav>
-        <ion-icon name="menu-outline" class="header__toggle" id="toggle-menu"></ion-icon>
-    </header>
-    <div class="head" style="text-align: center; margin-top: 50px;">
-        <h1>EDIT CAR</h1>
+    </nav>
+    
+    <div class="text-center mt-12">
+        <h1 class="text-2xl font-bold">EDIT CAR</h1>
     </div>
-    <div class="container" >
-        <div class="form-box " >
-            <h1 class="text-center">CAR INFORMATION</h1>
+
+    <div class="flex justify-center items-center mt-10 mb-10">
+        <div class="bg-white rounded-3xl shadow-2xl p-8 ">
+            <h1 class="text-center text-xl font-semibold">CAR INFORMATION</h1>
             <br>
-            <form id="carForm">
-                <div class="input-field">
-                    <label for="make">Name:</label>
-                    <input type="text" id="make" name="make" required>
+            <form method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                {{ form.non_field_errors }}
+
+                <div class="mb-5">
+                    <label for="make" class="block mb-1">Make:</label>
+                    {{ form.make|add_class:"w-full p-2 border border-gray-300 rounded-md bg-gray-50" }}
                 </div>
-                <div class="input-field">
-                    <label for="model">Model:</label>
-                    <input type="text" id="model" name="model" required>
+
+                <div class="mb-5">
+                    <label for="model" class="block mb-1">Model:</label>
+                    {{ form.model|add_class:"w-full p-2 border border-gray-300 rounded-md bg-gray-50" }}
                 </div>
-                <div class="input-field">
-                    <label for="year">Year:</label>
-                    <input type="number" id="year" name="year" required>
+
+                <div class="mb-5">
+                    <div class="text-red-700">{{ form.year.errors }}</div>
+                    <label for="year" class="block mb-1">Year:</label>
+                    {{ form.year|add_class:"w-full p-2 border border-gray-300 rounded-md bg-gray-50" }}
                 </div>
-                <div class="input-field">
-                    <label for="price">Price per Day:</label>
-                    <input type="number" id="price" name="price" required>
+
+                <div class="mb-5">
+                    <label for="price_per_day" class="block mb-1">Price per Day:</label>
+                    {{ form.price_per_day|add_class:"w-full p-2 border border-gray-300 rounded-md bg-gray-50" }}
                 </div>
-                <div class="input-field">
-                    <label for="description">Description:</label>
-                    <input type="text" id="description" name="description" required>
+
+                <div class="mb-5">
+                    <label for="description" class="block mb-1">Description:</label>
+                    {{ form.description|add_class:"w-full p-2 border border-gray-300 rounded-md bg-gray-50" }}
                 </div>
-                <div class="input-field">
-                    <label for="category">Category</label>
-                    <input type="text" id="category" name="category" required>
+
+                <div class="mb-5">
+                    <label for="category" class="block mb-1">Category:</label>
+                    {{ form.category|add_class:"w-full p-2 border border-gray-300 rounded-md bg-gray-50" }}
                 </div>
-                <div class="input-field">
-                    <label for="image">Upload Image:</label>
-                    <input type="file" id="image" name="image" accept="image/*" onchange="" required>
+
+                <div class="mb-5">
+                    <label for="feature" class="block mb-1">Features:</label>
+                    {{ form.feature|add_class:"w-full p-2" }}
                 </div>
-                <br>
-                <button type="submit" class="submit-button">Submit</button>
-            </form>
+                
+                <div class="mb-5">
+                    <label for="image" class="block mb-1">Current Image:</label>
+                    {% if car.image %}
+                        <div class="w-48 h-24 border">
+                            <img src="{{ car.image.url }}" alt="Car Image" class="object-fill w-full h-full">
+                        </div>
+                    {% else %}
+                        <p>No image available</p>
+                    {% endif %}
+                </div>
+
+                <div class="mb-5">
+                    <label for="image" class="block mb-1">Upload Image:</label>
+                    {{ form.image|add_class:"w-full p-2 bg-gray-50 text-sm border rounded-lg" }}
+                </div>
+                <button type="submit" class="w-full bg-green-600 text-white py-2 px-4 rounded-md hover:bg-green-700">Submit</button>
+            </form> 
+            <button
+                type="submit"
+                class="delete"
+                onclick="removeCar({{ car.id }}, '{{ csrf_token }}')"
+                >
+                DELETE THIS CAR
+            </button>
+
         </div>
     </div>
 </body>
+<script>
+    async function removeCar(car_id, csrf_token){
+
+        // กำหนด path ให้ถูกต้อง
+        fetch(`/manage/category/delete/${car_id}/`, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': csrf_token
+            },
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.message) {
+                alert(data.message)
+            }
+            console.log('Item deleted successfully')
+            window.location.href = '/manage/category/';  // เปลี่ยนเส้นทางไปที่ manage_car
+        })
+        .catch(error => console.error('Error:', error));
+    }
+</script>
 </html>
