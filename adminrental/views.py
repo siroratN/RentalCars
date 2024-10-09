@@ -3,8 +3,7 @@ from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.urls import reverse
 from django.views import View
 from .views import *
-from .models import *
-from .forms import *
+from adminrental.forms import *
 from django.shortcuts import get_object_or_404, redirect, render
 from myrental.models import *
 
@@ -17,7 +16,6 @@ class RentalSearch(View):
     def get(self, request):
         search = request.GET.get('search')
         rental = Rental.objects.filter(rental_car__car__make__icontains=search)
-        # rental = Rental.objects.filter(rental_car__icontains=search)
         return render(request, "manage-rent.html", {'rentals': rental})
     
 class ManageCar(View):
@@ -41,19 +39,47 @@ class SelectCategory(View):
 
 class CategorySearch(View):
     def get(self, request, pk):
-        search = request.GET.get('search')
         print(pk)
+        search = request.GET.get('search')
         category = CategoryCar.objects.all()
-        catpk = Car.objects.filter(category=pk)
-        carlists = CategoryCar.objects.filter(car__make__icontains=search)
+        catpk = CategoryCar.objects.get(id=pk)
+        print(catpk)
+        carlists = Car.objects.filter(category_id=pk, make__icontains=search)
         return render(request, "manage-car.html", {'category' : category,
                                                    'carlists' : carlists,
                                                    'catpk' : catpk})
 
+
 class AddCar(View):
     def get(self, request):
-        return render(request, "add-car.html", )
-    
+        form = UpdateCarForm()
+        return render(request, "add-car.html", {"form": form})
+
+    def post(self, request, pk):
+        form = UpdateCarForm(request.POST, request.FILES)
+
+        if form.is_valid():
+            form.save()
+            return redirect('manage_car')
+
+        return render(request, "add-car.html", {"form": form})
+
 class EditCar(View):
-    def get(self, request):
-        return render(request, "edit-car.html", )
+    def get(self, request, car_id):
+        caredit = Car.objects.get(pk=car_id)
+        form = UpdateCarForm(instance=caredit)
+        return render(request, "booking.html", {
+            "form": form,
+        })
+
+    def post(self, request, booking_id):
+        caredit = Car.objects.get(pk=booking_id)
+        form = UpdateCarForm(request.POST, instance=caredit)
+
+        if form.is_valid():
+            form.save()
+            return redirect('add_car')
+
+        return render(request, "add-car.html", {
+            "form": form
+        })

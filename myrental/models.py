@@ -3,9 +3,8 @@ from django.contrib.auth.models import User
 
 class CategoryCar(models.Model):
     name = models.CharField(max_length=50)
-    image = models.CharField(max_length=100)
+    image = models.CharField(max_length=500)
     description = models.CharField(max_length=100)
-
     def __str__(self):
         return self.name
     
@@ -23,7 +22,7 @@ class Car(models.Model):
     price_per_day = models.IntegerField()
     description = models.CharField(max_length=100)
     category = models.ForeignKey(CategoryCar, on_delete=models.CASCADE)
-    image = models.CharField(max_length=100)
+    image = models.ImageField(upload_to='car_image/') 
     feature = models.ManyToManyField(Feature)
     def __str__(self):
         return f"{self.make} {self.model}"

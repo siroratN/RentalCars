@@ -1,5 +1,7 @@
 from django.urls import path
 from adminrental import views
+from django.conf import settings
+from django.conf.urls.static import static
 
 urlpatterns = [
     path('rental/', views.RentalListView.as_view(), name='rental_info'),
@@ -9,7 +11,9 @@ urlpatterns = [
     path('category/<int:pk>/', views.SelectCategory.as_view(), name="catcar_id"),
     path('category/search/<int:pk>/', views.CategorySearch.as_view(), name="category_search"),
 
-    path('car/addcar/', views.AddCar.as_view(), name="add_car"),
-    path('car/editcar/', views.EditCar.as_view(), name="edit_car"),
+    path('category/addcar/<int:pk>', views.AddCar.as_view(), name="add_car"),
+    path('category/editcar/', views.EditCar.as_view(), name="edit_car")
 
 ]
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
