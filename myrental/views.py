@@ -18,7 +18,6 @@ import json
 from django.http import JsonResponse, HttpResponse
 from django.views import View
 import stripe
-
 stripe.api_key = settings.STRIPE_SECRET_KEY
 class CreateCheckoutSessionView(View):
     def post(self, request):
@@ -68,7 +67,6 @@ class Success(View):
                 customer=cus,
                 total_price=int(total_price)/100,
                 status='Complete')
-            print(newrental)
             for i in range(len(car_ids)):
                 car = Car.objects.get(id=car_ids[i])
                 start_date = start_dates[i]
@@ -80,8 +78,21 @@ class Success(View):
                     end_date=end_date
                 )
             allren = Rental_car.objects.filter(rental=newrental)
-            for i in allren:
-                print(i.start_date)
+            subject = 'Your Car Booking Confirmation'
+            message = f"""
+    เรียนคุณ {cus.user.username},
+การจองรถ {car} ของคุณได้รับการยืนยันแล้ว
+หากคุณมีคำถามหรือต้องการความช่วยเหลือเพิ่มเติม กรุณาติดต่อเราที่เบอร์ 038-456-987
+ทางร้านจะติดต่อกลับไปหาคุณเร็วๆ นี้
+ขอบคุณที่ใช้บริการเรา!
+""" 
+            recipient_list = [request.user.email]
+            send_mail(
+                subject,
+                message,
+                settings.DEFAULT_FROM_EMAIL, 
+                recipient_list
+            )
             return render(request, 'success.html', {
                 'rental': newrental,
                 'allren': allren
@@ -111,10 +122,11 @@ def get_available_cars(start_date, end_date):
         rental_car__start_date__lt=end_date,
         rental_car__end_date__gt=start_date 
     )
+
 class RentalViewFirst(View):
     def get(self, request):
-        cate = CategoryCar.objects.all()
-        car = Car.objects.all()
+        cate = CategoryCar.objects.all().distinct()
+        car = Car.objects.values('make').distinct()
         feature = Feature.objects.all()
 
         start_date = request.GET.get('start_date')
@@ -135,9 +147,9 @@ class RentalViewFirst(View):
         
 class FilterView(View):
     def get(self, request, start_date, end_date):
-        cate = CategoryCar.objects.all()
-        car = Car.objects.all()
-        feature = Feature.objects.all()
+        cate = CategoryCar.objects.all().distinct()
+        car = Car.objects.values('make').distinct()
+        feature = Feature.objects.all().distinct()
         selected_categories = [int(cat_id) for cat_id in request.GET.getlist('categories')]
         selected_brands = request.GET.getlist('brands')
         selected_features = [int(feature_id) for feature_id in request.GET.getlist('features')]
@@ -175,10 +187,12 @@ class FilterView(View):
         
 class SearchView(View):
         def get(self, request, start_date, end_date):
-            cate = CategoryCar.objects.all()
-            car = Car.objects.all()
-            feature = Feature.objects.all()
+            cate = CategoryCar.objects.all().distinct()
+            car = Car.objects.values('make').distinct()
+            feature = Feature.objects.all().distinct()
+            
             car_search = request.GET.get('car')
+            
             datetime.datetime.strptime(start_date, "%Y-%m-%d").date()
             datetime.datetime.strptime(end_date, "%Y-%m-%d").date()
             
@@ -212,21 +226,5 @@ class CarDetail(View):
 class ConfirmBill(View):
     def get(self, request, pk):
         car = Car.objects.get(pk=pk)
-        subject = 'Your Car Booking Confirmation'
         cus = Customer.objects.get(user=request.user.id)
-        message = f"""
-        เรียนคุณ {cus.user.username},
-        การจองรถ {car} ของคุณได้รับการยืนยันแล้ว
-        หากคุณมีคำถามหรือต้องการความช่วยเหลือเพิ่มเติม กรุณาติดต่อเราที่เบอร์ 038-456-987
-        ทางร้านจะติดต่อกลับไปหาคุณเร็วๆ นี้
-        ขอบคุณที่ใช้บริการเรา!
-        """ 
-        recipient_list = [request.user.email]
-        send_mail(
-            subject,
-            message,
-            settings.DEFAULT_FROM_EMAIL, 
-            recipient_list,
-            fail_silently=False,
-        )
         return render(request, 'confirm.html' , {'car':car,'cus':cus, 'STRIPE_PUBLIC_KEY': settings.STRIPE_PUBLIC_KEY,})
