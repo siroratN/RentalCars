@@ -54,7 +54,7 @@
                     {% for rental_car in rental.rental_car_set.all %}
                         <tr class="hover:bg-gray-50">
                             <td>{{ rental_car.car.make }} {{ rental_car.car.model }}</td>
-                            <td>{{ rental.customer.user.username }}</td>
+                            <td><a href="{% url 'customer_info' pk=rental.customer.id%}" class='text-blue-600 underline'>{{ rental.customer.user.username }}</a></td>
                             <td>{{ rental_car.start_date }}</td>
                             <td>{{ rental_car.end_date }}</td>
                             <td>{{ rental.total_price }}</td>

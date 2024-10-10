@@ -17,8 +17,12 @@ class LoginView(View):
         form = AuthenticationForm(data=request.POST)
         if form.is_valid():
             user = form.get_user() 
-            login(request,user)
-            return redirect('Date')  
+            login(request, user)
+
+            if user.is_staff:
+                return redirect('category')
+            else:
+                return redirect('date')
         return render(request,'login.html', {"form":form})
 
 

@@ -19,6 +19,12 @@ class RentalSearch(View):
         rental = Rental.objects.filter(rental_car__car__make__icontains=search)
         return render(request, "manage-rent.html", {'rentals': rental})
     
+
+class CustomerInfo(View):
+    def get(self, request, pk):
+        customer = Customer.objects.get(pk=pk)
+        return render(request, "customer-info.html", {'customer': customer})
+
 class ManageCar(View):
     def get(self, request):
         category = CategoryCar.objects.all().order_by('id') # 5 category ที่เราจะเลือก
