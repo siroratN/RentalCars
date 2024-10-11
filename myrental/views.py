@@ -15,7 +15,7 @@ from .models import *
 import datetime
 from django.db.models import *
 import json
-from django.http import JsonResponse, HttpResponse
+from django.http import JsonResponse
 from django.views import View
 import stripe
 stripe.api_key = settings.STRIPE_SECRET_KEY
@@ -58,47 +58,46 @@ class Success(View):
         total_price = checkout_session['amount_total']
         car_ids = json.loads(checkout_session['metadata']['car_ids'])
         start_dates = json.loads(checkout_session['metadata']['start_dates'])
-        end_dates = json.loads(checkout_session['metadata']['end_dates']) #แปลงกลับเป็น list
+        end_dates = json.loads(checkout_session['metadata']['end_dates'])
+        print(checkout_session['metadata'])
         print(start_dates)
         cus = Customer.objects.get(user=request.user.id)
-        status = checkout_session['payment_status']
-        if status == 'paid':
-            newrental = Rental.objects.create(
-                customer=cus,
-                total_price=int(total_price)/100,
-                status='Complete')
-            for i in range(len(car_ids)):
-                car = Car.objects.get(id=car_ids[i])
-                start_date = start_dates[i]
-                end_date = end_dates[i]
-                Rental_car.objects.create(
-                    rental=newrental,
-                    car=car,
-                    start_date=start_date,
-                    end_date=end_date
-                )
-            allren = Rental_car.objects.filter(rental=newrental)
-            subject = 'Your Car Booking Confirmation'
-            message = f"""
+        newrental = Rental.objects.create(
+            customer=cus,
+            total_price=int(total_price)/100,
+            status='Complete')
+        for i in range(len(car_ids)):
+            car = Car.objects.get(id=car_ids[i])
+            start_date = start_dates[i]
+            end_date = end_dates[i]
+            Rental_car.objects.create(
+                rental=newrental,
+                car=car,
+                start_date=start_date,
+                end_date=end_date
+            )
+        allren = Rental_car.objects.filter(rental=newrental)
+        
+        subject = 'Your Car Booking Confirmation'
+        message = f"""
     เรียนคุณ {cus.user.username},
 การจองรถ {car} ของคุณได้รับการยืนยันแล้ว
 หากคุณมีคำถามหรือต้องการความช่วยเหลือเพิ่มเติม กรุณาติดต่อเราที่เบอร์ 038-456-987
 ทางร้านจะติดต่อกลับไปหาคุณเร็วๆ นี้
 ขอบคุณที่ใช้บริการเรา!
 """ 
-            recipient_list = [request.user.email]
-            send_mail(
-                subject,
-                message,
-                settings.DEFAULT_FROM_EMAIL, 
-                recipient_list
-            )
-            return render(request, 'success.html', {
+        recipient_list = [request.user.email]
+        send_mail(
+            subject,
+            message,
+            settings.DEFAULT_FROM_EMAIL, 
+            recipient_list
+        )
+        
+        return render(request, 'success.html', {
                 'rental': newrental,
                 'allren': allren
             })
-        else:
-            return render(request, 'cancel.html')
 
 class Cancel(View):
     def get(self, request):
@@ -119,8 +118,8 @@ class DateRental(View):
 
 def get_available_cars(start_date, end_date):
     return Car.objects.exclude(
-        rental_car__start_date__lt=end_date,
-        rental_car__end_date__gt=start_date 
+        rental_car__start_date__lte=end_date,
+        rental_car__end_date__gte=start_date 
     )
 
 class RentalViewFirst(View):
@@ -147,30 +146,29 @@ class RentalViewFirst(View):
         
 class FilterView(View):
     def get(self, request, start_date, end_date):
+        
         cate = CategoryCar.objects.all().distinct()
         car = Car.objects.values('make').distinct()
         feature = Feature.objects.all().distinct()
+        
         selected_categories = [int(cat_id) for cat_id in request.GET.getlist('categories')]
         selected_brands = request.GET.getlist('brands')
         selected_features = [int(feature_id) for feature_id in request.GET.getlist('features')]
         selected_price = request.GET.get('price')
         selected_price = int(selected_price) if selected_price else 8500
         print(selected_price)
+        
         datetime.datetime.strptime(start_date, "%Y-%m-%d").date()
         datetime.datetime.strptime(end_date, "%Y-%m-%d").date()
         available_cars = get_available_cars(start_date, end_date)
-        if selected_categories:
-            available_cars = available_cars.filter(category__id__in=selected_categories)
-        if selected_brands:
-            available_cars = available_cars.filter(make__in=selected_brands)
-        if selected_features:
-            available_cars = available_cars.filter(feature__id__in=selected_features)
-        if selected_price:
-            available_cars = available_cars.filter(price_per_day__lte=selected_price)
+        
+        available_cars = filter_cars(get_available_cars(start_date, end_date), selected_categories, selected_brands, selected_features, selected_price)
+
         if not available_cars.exists():
             message = "ไม่พบรถที่ต้องการค้นหา"
         else:
             message = None
+            
         return render(request, "homeren.html", {
             'cate': cate,
             'car': car,
@@ -184,7 +182,16 @@ class FilterView(View):
             'selected_price': selected_price,
             'message': message
         })
-        
+
+def filter_cars(available_cars, categories, brands, features, price):
+            if categories:
+                available_cars = available_cars.filter(category__id__in=categories)
+            if brands:
+                available_cars = available_cars.filter(make__in=brands)
+            if features:
+                available_cars = available_cars.filter(feature__id__in=features)
+            return available_cars.filter(price_per_day__lte=price)
+
 class SearchView(View):
         def get(self, request, start_date, end_date):
             cate = CategoryCar.objects.all().distinct()
@@ -196,13 +203,14 @@ class SearchView(View):
             datetime.datetime.strptime(start_date, "%Y-%m-%d").date()
             datetime.datetime.strptime(end_date, "%Y-%m-%d").date()
             
-            available_cars = get_available_cars(start_date, end_date)
-            available_cars = available_cars.filter(make__icontains=car_search)
+            available_cars = get_available_cars(start_date, end_date).filter(make__icontains=car_search)
             print(available_cars)
+            
             if not available_cars.exists():
                 message = "ไม่พบรถที่ต้องการค้นหา"
             else:
                 message = None
+                
             return render(request, "homeren.html", {
             'cate': cate,
             'car': car,

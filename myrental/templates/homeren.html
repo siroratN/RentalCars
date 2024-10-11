@@ -106,7 +106,9 @@
                 {% if cars %}
                     <div class="grid grid-cols-3 gap-7">
                         {% for i in cars %}
-                        <div class="w-full max-w-sm transition duration-300 bg-white border border-gray-200 rounded-lg shadow-lg hover:bg-gray-50">
+                        <div class="w-full max-w-sm transition duration-300 bg-white border border-gray-200 rounded-lg shadow-lg carCards hover:bg-gray-50"
+                        
+                        carid='{{ i.id }}'>
                             <img class="p-8 rounded-t-lg" src="{{ i.image }}" alt="product image" />
                             <div class="px-5 pb-5">
                                 <div class="flex items-center justify-between mb-3">
@@ -150,6 +152,20 @@
     rangeInput.addEventListener('input', function() {
         rangeValue.textContent = `$${this.value}`;
     });
+
+    const all_cars = document.querySelectorAll('.carCards')
+    let selectedCars = JSON.parse(localStorage.getItem("selectedCars")) || []
+    const replicate = selectedCars.filter(car =>
+    new Date(car.start_date) <= new Date("{{end_date}}") &&
+    new Date(car.end_date) >= new Date("{{start_date}}")
+    ); 
+    for (let car of all_cars){
+        const carID = car.getAttribute('carid');
+        if(replicate.some(rep=>rep.id==carID)){
+            car.classList.add('hidden')
+        }
+    }
+
     function setCar() {
         const carID = event.target.getAttribute('data-car-id');
         const carMake = event.target.getAttribute('data-car-make');
