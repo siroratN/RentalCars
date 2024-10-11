@@ -1,4 +1,4 @@
-{% extends "layout.html" %}
+{% extends 'layout.html' %}
 {% block title %}Car Manage{% endblock %}
 {% block head %}
     <style>
@@ -81,7 +81,7 @@
             {% if catcar.name == catpk.name %}
                 <p class="text-center text-transparent uppercase bg-clip-text bg-gradient-to-r from-pink-500 to-violet-500">{{ catcar.name }}</p>
             {% else %}
-                <p class="text-center uppercase">{{ catcar.name }}</p>
+                <p class="text-center uppercase ">{{ catcar.name }}</p>
             {% endif %}
         {% endfor %}
 
@@ -89,7 +89,7 @@
     <div class="p-12 my-10 border border-gray-300 rounded-lg shadow-lg box">
         <div class="flex justify-between mb-3">
             <a href="{% url 'manage_car' %}" class="ml-16 text-blue-600 hover:underline">Refresh</a>
-            <p class="ml-10 text-2xl text-transparent bg-clip-text bg-gradient-to-r from-pink-500 to-violet-500">{{catpk.name}}</p>
+            <p class="ml-36 text-2xl text-transparent bg-clip-text bg-gradient-to-r from-pink-500 to-violet-500">{{catpk.name}}</p>
             <form method="get" action="{% url 'category_search' pk=catpk.id %}">
                 <div class="flex">
                     <input name="search" type="text" id="searchInput" placeholder="ค้นหาข้อมูล..." class="w-2/4 px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400">
@@ -97,7 +97,7 @@
                 </form>
                 <form method="POST" action="{% url 'add_car' pk=catpk.id %}">
                     {% csrf_token %}
-                    <button type="submit" class="px-4 py-1 ml-5 text-white transition duration-300 bg-green-500 rounded-lg hover:bg-green-600">ADD CAR</button>
+                    <button type="submit" class="px-4 py-1 ml-5 h-11 text-white transition duration-300 bg-green-500 rounded-lg hover:bg-green-600">ADD CAR</button>
                 </form>
                 </div>          
         </div>
@@ -121,4 +121,4 @@
             </tbody>
         </table>
     </div>
-{% endblock %}
+{% endblock content %}
