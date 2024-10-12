@@ -1,6 +1,6 @@
 {% extends 'layout.html' %}
 {% load humanize %}
-
+{% load static %}
 {% block head %}
 <style>
     body {
@@ -53,7 +53,7 @@
                                     </li>
                                 {% endfor %}
                             </ul>
-                            <a href="{% url 'confirm' pk=car.id %}" onclick="setCar()" 
+                            <a href="{% url 'confirm' pk=car.id %}" onclick="setCar('{{start_date}}', '{{end_date}}', this)"
                             data-car-id="{{ car.id }}" 
                             data-car-make="{{ car.make }}" 
                             data-car-model="{{ car.model }}" 
@@ -69,29 +69,6 @@
         </section>
     </div>
 </body>
-<script>
-    function setCar() {
-        const carID = event.target.getAttribute('data-car-id');
-        const carMake = event.target.getAttribute('data-car-make');
-        const carModel = event.target.getAttribute('data-car-model');
-        const carYear = event.target.getAttribute('data-car-year');
-        const carPrice = event.target.getAttribute('data-car-price');
-        const startDate = "{{start_date}}";
-        const endDate = "{{end_date}}";
-
-        const car = {
-                id: carID,
-                make: carMake,
-                model: carModel,
-                year: carYear,
-                price: carPrice,
-                start_date: startDate,
-                end_date: endDate
-            };
-    
-        let selectedCars = JSON.parse(localStorage.getItem("selectedCars")) || []
-        selectedCars.push(car);
-        localStorage.setItem("selectedCars", JSON.stringify(selectedCars));    
-    }
-</script>
 {% endblock content %}
+{% block script %}<script src="{% static 'js/setCar.js' %}"></script>{% endblock %}
+
