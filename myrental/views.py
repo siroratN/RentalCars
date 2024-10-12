@@ -19,7 +19,12 @@ from django.http import JsonResponse, HttpResponse
 from django.views import View
 import stripe
 stripe.api_key = settings.STRIPE_SECRET_KEY
-class CreateCheckoutSessionView(View):
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
+
+
+class CreateCheckoutSessionView(LoginRequiredMixin, PermissionRequiredMixin, View):
+    login_url = '/authen/login/'
+    permission_required = "myrental.view_rental" 
     def post(self, request):
         YOUR_DOMAIN = 'http://127.0.0.1:8000'
         data = json.loads(request.body)
@@ -51,7 +56,9 @@ class CreateCheckoutSessionView(View):
         return JsonResponse({'id': checkout_session.id})
 
 
-class Success(View):
+class Success(LoginRequiredMixin, PermissionRequiredMixin, View):
+    login_url = '/authen/login/'
+    permission_required = "myrental.view_rental" 
     def get(self, request):
         checkout_session_id = request.GET.get('checkout_session_id')
         checkout_session = stripe.checkout.Session.retrieve(checkout_session_id) #ดึงข้อมูลทั้งหมด
@@ -100,11 +107,15 @@ class Success(View):
         else:
             return render(request, 'cancel.html')
 
-class Cancel(View):
+class Cancel(LoginRequiredMixin, PermissionRequiredMixin, View):
+    login_url = '/authen/login/'
+    permission_required = "myrental.view_rental"
     def get(self, request):
         return render(request, 'cancel.html')
 
-class DateRental(View): 
+class DateRental(LoginRequiredMixin, PermissionRequiredMixin, View): 
+    login_url = '/authen/login/'
+    permission_required = "myrental.view_rental"
     def get(self, request):
         form = DateRangeForm()
         return render(request, "date.html", {"form" : form})
@@ -118,12 +129,15 @@ class DateRental(View):
         return render(request, "date.html", {"form" : form})
 
 def get_available_cars(start_date, end_date):
+
     return Car.objects.exclude(
         rental_car__start_date__lt=end_date,
         rental_car__end_date__gt=start_date 
     )
 
-class RentalViewFirst(View):
+class RentalViewFirst(LoginRequiredMixin, PermissionRequiredMixin, View):
+    login_url = '/authen/login/'
+    permission_required = "myrental.view_rental"  
     def get(self, request):
         cate = CategoryCar.objects.all().distinct()
         car = Car.objects.values('make').distinct()
@@ -145,7 +159,9 @@ class RentalViewFirst(View):
             'end_date': end_date,
         })
         
-class FilterView(View):
+class FilterView(LoginRequiredMixin, PermissionRequiredMixin, View):
+    login_url = '/authen/login/'
+    permission_required = "myrental.view_rental"
     def get(self, request, start_date, end_date):
         cate = CategoryCar.objects.all().distinct()
         car = Car.objects.values('make').distinct()
@@ -185,7 +201,9 @@ class FilterView(View):
             'message': message
         })
         
-class SearchView(View):
+class SearchView(LoginRequiredMixin, PermissionRequiredMixin, View):
+        login_url = '/authen/login/'
+        permission_required = "myrental.view_rental"
         def get(self, request, start_date, end_date):
             cate = CategoryCar.objects.all().distinct()
             car = Car.objects.values('make').distinct()
@@ -214,7 +232,9 @@ class SearchView(View):
             'message': message
         })   
 
-class CarDetail(View):
+class CarDetail(LoginRequiredMixin, PermissionRequiredMixin, View):
+    login_url = '/authen/login/'
+    permission_required = "myrental.view_rental"
     def get(self, request, pk, start_date, end_date):
         datetime.datetime.strptime(start_date, "%Y-%m-%d").date()
         datetime.datetime.strptime(end_date, "%Y-%m-%d").date()
@@ -223,7 +243,9 @@ class CarDetail(View):
         car = Car.objects.get(pk=pk)
         return render(request, 'CarDetail.html', {'car':car, 'start_date':start_date, 'end_date':end_date})
 
-class ConfirmBill(View):
+class ConfirmBill(LoginRequiredMixin, PermissionRequiredMixin, View):
+    login_url = '/authen/login/'
+    permission_required = "myrental.view_rental"  
     def get(self, request, pk):
         car = Car.objects.get(pk=pk)
         cus = Customer.objects.get(user=request.user.id)

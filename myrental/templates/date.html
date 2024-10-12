@@ -8,7 +8,7 @@ body{
 }
 </style>
 {% endblock head %}
-{% block nav %}{% include 'navadmin.html' %}{% endblock nav %}
+{% block nav %}{% include 'nav.html' %}{% endblock nav %}
 {% block content %}
 <div class="flex items-center justify-center min-h-screen">
     <div class="flex w-full max-w-5xl overflow-hidden bg-white rounded-lg shadow-lg">
@@ -19,7 +19,7 @@ body{
         </div>
 
         <div class="w-1/2 p-10 bg-white">
-            <h2 class="mb-6 text-3xl font-bold text-center">เลือกวันที่</h2>
+            <h2 class="mb-6 text-3xl font-bold text-center">เลือกวันที่จองรถ</h2>
             <form method="POST">
                 {% csrf_token %}
                 <div class="mb-4 text-red-500">

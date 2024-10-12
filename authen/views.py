@@ -17,21 +17,12 @@ class LoginView(View):
         form = AuthenticationForm(data=request.POST)
         if form.is_valid():
             user = form.get_user() 
-<<<<<<< HEAD
             login(request, user)
 
             if user.is_staff:
-                return redirect('category')
+                return redirect('rental_info')
             else:
-                return redirect('date')
-=======
-            if user.is_staff:
-                login(request, user)
-                return redirect('manage_car')
-            else:
-                login(request, user)
                 return redirect('Date')
->>>>>>> a3fd06b70f1006b647e9ba4d54ec5f5f12f8d963
         return render(request,'login.html', {"form":form})
 
 
