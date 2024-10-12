@@ -1,5 +1,7 @@
 {% extends "layout.html" %}
 {% load humanize %}
+{% load static %}
+
 {% block title %}Rental Car{% endblock title %}
 {% block head %}
 <style>
@@ -106,9 +108,7 @@
                 {% if cars %}
                     <div class="grid grid-cols-3 gap-7">
                         {% for i in cars %}
-                        <div class="w-full max-w-sm transition duration-300 bg-white border border-gray-200 rounded-lg shadow-lg carCards hover:bg-gray-50"
-                        
-                        carid='{{ i.id }}'>
+                        <div class="w-full max-w-sm transition duration-300 bg-white border border-gray-200 rounded-lg shadow-lg carCards hover:bg-gray-50" carid="{{i.id}}">
                             <img class="p-8 rounded-t-lg" src="{{ i.image }}" alt="product image" />
                             <div class="px-5 pb-5">
                                 <div class="flex items-center justify-between mb-3">
@@ -125,7 +125,7 @@
                                 </div>
                                 <div class="flex items-center justify-between">
                                     <span class="text-lg font-bold text-gray-900">{{ i.price_per_day|intcomma }}/day</span>
-                                    <a href="{% url 'confirm' pk=i.id %}" onclick="setCar()" 
+                                    <a href="{% url 'confirm' pk=i.id %}" onclick="setCar('{{start_date}}', '{{end_date}}', this)" 
                                     data-car-id="{{ i.id }}" 
                                     data-car-make="{{ i.make }}" 
                                     data-car-model="{{ i.model }}" 
@@ -144,7 +144,6 @@
         </div>
     </div>
 </body>
-
 <script>
     const rangeInput = document.getElementById('labels-range-input');
     const rangeValue = document.getElementById('range-value');
@@ -152,7 +151,7 @@
     rangeInput.addEventListener('input', function() {
         rangeValue.textContent = `$${this.value}`;
     });
-
+    
     const all_cars = document.querySelectorAll('.carCards')
     let selectedCars = JSON.parse(localStorage.getItem("selectedCars")) || []
     const replicate = selectedCars.filter(car =>
@@ -161,34 +160,12 @@
     ); 
     for (let car of all_cars){
         const carID = car.getAttribute('carid');
+        console.log(carID)
         if(replicate.some(rep=>rep.id==carID)){
             car.classList.add('hidden')
         }
     }
-
-    function setCar() {
-        const carID = event.target.getAttribute('data-car-id');
-        const carMake = event.target.getAttribute('data-car-make');
-        const carModel = event.target.getAttribute('data-car-model');
-        const carYear = event.target.getAttribute('data-car-year');
-        const carPrice = event.target.getAttribute('data-car-price');
-        const startDate = "{{start_date}}";
-        const endDate = "{{end_date}}";
-
-        const car = {
-                id: carID,
-                make: carMake,
-                model: carModel,
-                year: carYear,
-                price: carPrice,
-                start_date: startDate,
-                end_date: endDate
-            };
-    
-        let selectedCars = JSON.parse(localStorage.getItem("selectedCars")) || []
-        selectedCars.push(car);
-        localStorage.setItem("selectedCars", JSON.stringify(selectedCars));    
-    }
-    
 </script>
 {% endblock content %}
+{% block script %}<script src="{% static 'js/setCar.js' %}"></script>{% endblock %}
+

@@ -77,11 +77,12 @@ class Success(View):
                 end_date=end_date
             )
         allren = Rental_car.objects.filter(rental=newrental)
+        car_names = ', '.join([str(rental_car.car) for rental_car in allren])
         
         subject = 'Your Car Booking Confirmation'
         message = f"""
-    เรียนคุณ {cus.user.username},
-การจองรถ {car} ของคุณได้รับการยืนยันแล้ว
+    เรียนคุณ {cus},
+การจองรถ {car_names} ของคุณได้รับการยืนยันแล้ว
 หากคุณมีคำถามหรือต้องการความช่วยเหลือเพิ่มเติม กรุณาติดต่อเราที่เบอร์ 038-456-987
 ทางร้านจะติดต่อกลับไปหาคุณเร็วๆ นี้
 ขอบคุณที่ใช้บริการเรา!

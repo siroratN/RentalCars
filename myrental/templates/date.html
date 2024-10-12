@@ -1,4 +1,5 @@
 {% extends "layout.html" %}
+{% load static %}
 {% load widget_tweaks %}
 {% block title %}Date Range Picker{% endblock title %}
 {% block head %}
@@ -8,7 +9,7 @@ body{
 }
 </style>
 {% endblock head %}
-{% block nav %}{% include 'navadmin.html' %}{% endblock nav %}
+{% block nav %}{% include 'nav.html' %}{% endblock nav %}
 {% block content %}
 <div class="flex items-center justify-center min-h-screen">
     <div class="flex w-full max-w-5xl overflow-hidden bg-white rounded-lg shadow-lg">
@@ -50,13 +51,5 @@ body{
         </div>
     </div>
 </div>
-
-<script>
-function setDate(){
-    const startDate = document.getElementById("id_start_date").value;
-    const endDate = document.getElementById("id_end_date").value;
-    localStorage.setItem("start_date", startDate);
-    localStorage.setItem("end_date", endDate);
-}
-</script>
 {% endblock content %}
+{% block script %}<script src="{% static 'js/setDate.js' %}"></script>{% endblock %}

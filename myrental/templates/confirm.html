@@ -1,4 +1,5 @@
 {% extends 'layout.html' %}
+{% load static %}
 {% block title %}
   Confirm Rental
 {% endblock %}
@@ -50,29 +51,35 @@
           </div>
           <div class="grid grid-cols-2 gap-4 mt-8">
             <a href="{% url 'Date' %}" class="px-6 py-3 font-semibold text-center text-white transition bg-blue-600 rounded-lg hover:bg-blue-700">เลือกเช่าอีก</a>
-            <button id="checkout-button" onclick="setPrice()" class="px-6 py-3 font-semibold text-center text-white transition bg-green-600 rounded-lg hover:bg-green-700">ชำระเงิน</button>
-          </div>
+            <button 
+            id="checkout-button" 
+            onclick="setPrice('{{ STRIPE_PUBLIC_KEY }}', '{{ csrf_token }}')" 
+            class="px-6 py-3 font-semibold text-center text-white transition bg-green-600 rounded-lg hover:bg-green-700">
+            ชำระเงิน
+            </button>
+                </div>
         </div>
       </div>
     </div>
   </body>
   <script>
     document.addEventListener('DOMContentLoaded', function () {
+  
       const selectedCars = JSON.parse(localStorage.getItem('selectedCars')) || []
-    
+  
       const tableBody = document.getElementById('car-table-body')
       let totalPrice = 0
-    
+  
       selectedCars.forEach((car) => {
-        const price = parseInt(car.price, 10)
-        const startDate = new Date(car.start_date)
-        const endDate = new Date(car.end_date)
-        const timeDifference = endDate - startDate
-        const days = Math.ceil(timeDifference / (1000 * 3600 * 24))
-        const totalCarPrice = price * days
-        const row = document.createElement('tr')
-        row.classList.add('bg-white', 'border-b', 'dark:bg-gray-800')
-        row.innerHTML = `
+          const price = parseInt(car.price, 10)
+          const startDate = new Date(car.start_date)
+          const endDate = new Date(car.end_date)
+          const timeDifference = endDate - startDate
+          const days = Math.ceil(timeDifference / (1000 * 3600 * 24))
+          const totalCarPrice = price * days
+          const row = document.createElement('tr')
+          row.classList.add('bg-white', 'border-b', 'dark:bg-gray-800')
+          row.innerHTML = `
                 <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                     ${car.make} ${car.model} ${car.year}
                 </th>
@@ -80,33 +87,12 @@
                 <td class="px-6 py-4">${car.end_date}</td>
                 <td class="px-6 py-4">${days}</td>
                 <td class="px-6 py-4">${totalCarPrice} บาท</td>`
-        tableBody.appendChild(row)
-        totalPrice += totalCarPrice
+          tableBody.appendChild(row)
+          totalPrice += totalCarPrice
       })
       document.getElementById('total-price').textContent = `${totalPrice} บาท`
-      function setPrice() {
-        const stripe = Stripe('{{ STRIPE_PUBLIC_KEY }}')
-        const price = totalPrice
-        const carIds = selectedCars.map((car) => car.id)
-        const startDates = selectedCars.map((car) => car.start_date)
-        const endDates = selectedCars.map((car) => car.end_date)
-        fetch('/create-checkout-session/', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'X-CSRFToken': "{{csrf_token}}"
-          },
-          body: JSON.stringify({ car_id: carIds, price: price, start_date: startDates, end_date: endDates })
-        })
-          .then(function (response) {
-            return response.json()
-          })
-          .then(function (session) {
-            localStorage.clear()
-            return stripe.redirectToCheckout({ sessionId: session.id })
-          })
-      }
-      document.getElementById('checkout-button').addEventListener('click', setPrice)
     })
   </script>
 {% endblock %}
+{% block script %}<script src="{% static 'js/setPrice.js' %}"></script>{% endblock %}
+
