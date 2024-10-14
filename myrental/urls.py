@@ -4,6 +4,7 @@ from django.urls import include, path
 from django.views.generic import TemplateView
 from django.urls import *
 from django.conf.urls.static import static
+from authen.views import *
 
 urlpatterns = [
     path("rental/", views.RentalViewFirst.as_view(), name="Rental"),

@@ -13,7 +13,7 @@ urlpatterns = [
     path('category/<int:pk>/', views.SelectCategory.as_view(), name="catcar_id"),
     path('category/search/<int:pk>/', views.CategorySearch.as_view(), name="category_search"),
 
-    path('category/addcar/<int:pk>', views.AddCar.as_view(), name="add_car"),
+    path('category/addcar/', views.AddCar.as_view(), name="add_car"),
     path('category/editcar/<int:pk>', views.EditCar.as_view(), name="edit_car"),
     path('category/delete/<int:pk>/', views.DeleteCar.as_view(), name='delete_car'),
 

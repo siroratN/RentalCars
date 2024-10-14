@@ -16,7 +16,13 @@
 <body>
     <div class="px-5 py-5">
         <div class="grid grid-cols-2">
-            <p class="py-5 text-4xl font-bold uppercase">WELCOME {{user.username}}</p>
+            
+            {% if user.is_authenticated %} <!-- ถ้า user มีการ log in เข้ามา -->
+                <p class="py-5 text-4xl font-bold uppercase">Hello {{ user.username }}</p>
+            {% else %}
+                <p class="py-5 text-4xl font-bold uppercase">WELCOME</p>
+            {% endif %}
+
             <div class="flex justify-end">
                 <form class="flex items-center" action="{% url 'RentalSearchBar' start_date=start_date end_date=end_date %}" method="GET">
                     <input type="text" id="simple-search" name="car"
@@ -123,15 +129,26 @@
                                         </div>
                                     </a>
                                 </div>
+                                
                                 <div class="flex items-center justify-between">
                                     <span class="text-lg font-bold text-gray-900">{{ i.price_per_day|intcomma }}/day</span>
-                                    <a href="{% url 'confirm' pk=i.id %}" onclick="setCar('{{start_date}}', '{{end_date}}', this)" 
-                                    data-car-id="{{ i.id }}" 
-                                    data-car-make="{{ i.make }}" 
-                                    data-car-model="{{ i.model }}" 
-                                    data-car-year="{{ i.year }}" 
-                                    data-car-price="{{ i.price_per_day }}"
-                                    class="px-4 py-2 text-sm text-white transition bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300">เช่า</a>
+                                    {% if user.is_authenticated %}
+                                        <a href="{% url 'confirm' pk=i.id %}" onclick="setCar('{{start_date}}', '{{end_date}}', this)" 
+                                            data-car-id="{{ i.id }}" 
+                                            data-car-make="{{ i.make }}" 
+                                            data-car-model="{{ i.model }}" 
+                                            data-car-year="{{ i.year }}" 
+                                            data-car-price="{{ i.price_per_day }}"
+                                            class="px-4 py-2 text-sm text-white transition bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300">เช่า</a>
+                                    {% else %}
+                                        <a
+                                            data-car-id="{{ i.id }}" 
+                                            data-car-make="{{ i.make }}" 
+                                            data-car-model="{{ i.model }}" 
+                                            data-car-year="{{ i.year }}" 
+                                            data-car-price="{{ i.price_per_day }}">
+                                        </a>
+                                    {% endif %}
                                 </div>
                             </div>
                         </div>

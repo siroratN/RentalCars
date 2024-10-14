@@ -113,9 +113,7 @@ class Cancel(LoginRequiredMixin, PermissionRequiredMixin, View):
     def get(self, request):
         return render(request, 'cancel.html')
 
-class DateRental(LoginRequiredMixin, PermissionRequiredMixin, View): 
-    login_url = '/authen/login/'
-    permission_required = "myrental.view_rental"
+class DateRental(View): 
     def get(self, request):
         form = DateRangeForm()
         return render(request, "date.html", {"form" : form})
@@ -135,9 +133,7 @@ def get_available_cars(start_date, end_date):
         rental_car__end_date__gte=start_date 
     )
 
-class RentalViewFirst(LoginRequiredMixin, PermissionRequiredMixin, View):
-    login_url = '/authen/login/'
-    permission_required = "myrental.view_rental"  
+class RentalViewFirst(View):
     def get(self, request):
         cate = CategoryCar.objects.all().distinct()
         car = Car.objects.values('make').distinct()
@@ -232,9 +228,7 @@ class SearchView(LoginRequiredMixin, PermissionRequiredMixin, View):
             'message': message
         })   
 
-class CarDetail(LoginRequiredMixin, PermissionRequiredMixin, View):
-    login_url = '/authen/login/'
-    permission_required = "myrental.view_rental"
+class CarDetail(View):
     def get(self, request, pk, start_date, end_date):
         datetime.datetime.strptime(start_date, "%Y-%m-%d").date()
         datetime.datetime.strptime(end_date, "%Y-%m-%d").date()

@@ -1,71 +1,62 @@
 {% load static %}
 
-<nav class="bg-blue-200">
-  <div class="grid grid-cols-3 p-24 py-2 mx-auto max-w-screen-2xl justify-items-center">
-    <a href="#" class="flex items-center space-x-1 rtl:space-x-reverse justify-self-start">
-      <img src="{% static 'logo.png' %}" class="h-8" alt="Flowbite Logo" />
-      <span class="self-center text-xl font-semibold whitespace-nowrap">Rental Cars</span>
-    </a>
-    <div class="flex items-center space-x-3 md:order-2 md:space-x-0 rtl:space-x-reverse justify-self-end">
-      <button type="button" class="flex text-sm rounded-full md:me-0 focus:ring-4 focus:ring-black" id="user-menu-button" aria-expanded="false" data-dropdown-toggle="user-dropdown" data-dropdown-placement="bottom">
-        <span class="sr-only">Open user menu</span>
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
-        </svg>
-      </button>
-      <!-- Dropdown menu -->
-      <div class="z-50 hidden my-4 text-base list-none divide-gray-100 rounded-lg shadow justify-self-endide-y" id="user-dropdown">
-        <div class="px-4 py-3">
-          <span class="block text-sm text-gray-900">{{ user.first_name }} {{ user.last_name }}</span>
-          <span class="block text-sm text-gray-500 truncate dark:text-gray-400">{{ user.email }}</span>
-        </div>
-        <ul class="py-2" aria-labelledby="user-menu-button">
-          <li>
-            <a href="{% url 'profile' %}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-200">โปรไฟล์ผู้ใช้</a>
-          </li>
-          <li>
-            <a href="{% url 'pass' %}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-200">เปลี่ยนรหัสผ่าน</a>
-          </li>
 
-          <li>
-            <a href="{% url 'logout' %}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-200">ออกจากระบบ</a>
+<nav class="flex items-center justify-between w-full py-4 bg-white/80 text-black border">
+    <div class="logo flex items-center pl-12">
+        <img src="https://file.kelleybluebookimages.com/kbb/base/evox/CP/55034/2025-Honda-Civic-front_55034_032_1816x735_RE_cropped.png" alt="" class="w-24">
+    </div>
+    <nav class="flex items-center pr-7">
+        <ul class="flex space-x-12 pr-10">
+            <li>
+                  <a href="{% url 'Date' %}" class="relative block px-3 py-2 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 group">
+                      เลือกวัน
+                      <span class="absolute bottom-0 left-0 w-0 h-[2px] bg-blue-700 transition-all duration-300 group-hover:w-full"></span>
+                  </a>
           </li>
-        </ul>
+          <div class="flex items-center space-x-3 md:order-2 md:space-x-0 rtl:space-x-reverse justify-self-end">
+              <button type="button" class="flex text-sm rounded-full md:me-0 focus:ring-4 focus:ring-black" id="user-menu-button" aria-expanded="false" data-dropdown-toggle="user-dropdown" data-dropdown-placement="bottom">
+                <span class="sr-only">Open user menu</span>
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
+                </svg>
+              </button>
+        {% if user.is_authenticated and user.is_staff %}
+          <div class="hidden bg-white list-none divide-gray-100 rounded-lg shadow borde" id="user-dropdown">
+            <div class="px-4 py-3">
+              <span class="block text-sm text-gray-900">{{ user.first_name }} {{ user.last_name }}</span>
+              <span class="block text-sm text-gray-500 truncate dark:text-gray-400">{{ user.email }}</span>
+            </div>
+            <ul class="py-2" aria-labelledby="user-menu-button">
+              <li><a href="{% url 'profile' %}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-200">โปรไฟล์ผู้ใช้</a></li>
+              <li><a href="{% url 'pass' %}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-200">เปลี่ยนรหัสผ่าน</a></li>
+              <li><a href="{% url 'logout' %}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-200">ออกจากระบบ</a></li>
+            </ul>
+          </div>
+          <button data-collapse-toggle="navbar-user" type="button" class="inline-flex items-center justify-center w-10 h-10 p-2 text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600" aria-controls="navbar-user" aria-expanded="false">
+            <span class="sr-only">Open main menu</span>
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
+            </svg>
+          </button>
+        </div>
+        </div>
+      {% else %}
+        <div class="hidden bg-white list-none divide-gray-100 rounded-lg shadow borde" id="user-dropdown">
+          <ul class="py-2" aria-labelledby="user-menu-button">
+            <li><a href="{% url 'login' %}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-200">เข้าสู่ระบบ</a></li>
+            <li><a href="{% url 'regis' %}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-200">สมัครสมาชิก</a></li>
+          </ul>  
+        </div>
+        <button data-collapse-toggle="navbar-user" type="button" class="inline-flex items-center justify-center w-10 h-10 p-2 text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600" aria-controls="navbar-user" aria-expanded="false">
+          <span class="sr-only">Open main menu</span>
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
+          </svg>
+        </button>
       </div>
-      <button data-collapse-toggle="navbar-user" type="button" class="inline-flex items-center justify-center w-10 h-10 p-2 text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600" aria-controls="navbar-user" aria-expanded="false">
-        <span class="sr-only">Open main menu</span>
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
-        </svg>
-      </button>
-    </div>
-    <div class="items-center justify-between hidden w-full md:flex md:w-auto md:order-1" id="navbar-user">
-      <ul class="flex flex-col p-1 mt-4 font-medium border border-gray-100 rounded-lg md:p-0 md:space-x-8 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0">
-        <li>
-          <a href="{% url 'Date' %}" class="relative block px-3 py-2 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 group">
-            เลือกวัน
-            <span class="absolute bottom-0 left-0 w-0 h-[2px] bg-blue-700 transition-all duration-300 group-hover:w-full"></span>
-          </a>
-        </li>
-        <li>
-          <a href="#" class="relative block px-3 py-2 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 group">
-            ดูประวัติ
-            <span class="absolute bottom-0 left-0 w-0 h-[2px] bg-blue-700 transition-all duration-300 group-hover:w-full"></span>
-          </a>
-        </li>
-        <li>
-          <a href="#" class="relative block px-3 py-2 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 group">
-            จัดการการจอง
-            <span class="absolute bottom-0 left-0 w-0 h-[2px] bg-blue-700 transition-all duration-300 group-hover:w-full"></span>
-          </a>
-        </li>
-        <li>
-          <a href="#" class="relative block px-3 py-2 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 group">
-            จัดการรถ
-            <span class="absolute bottom-0 left-0 w-0 h-[2px] bg-blue-700 transition-all duration-300 group-hover:w-full"></span>
-          </a>
-        </li>
-      </ul>
-    </div>
-  </div>
+      </div>
+      {% endif %}
+        </ul>
+    </nav>
+    
 </nav>
