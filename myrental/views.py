@@ -244,3 +244,10 @@ class ConfirmBill(LoginRequiredMixin, PermissionRequiredMixin, View):
         car = Car.objects.get(pk=pk)
         cus = Customer.objects.get(user=request.user.id)
         return render(request, 'confirm.html' , {'car':car,'cus':cus, 'STRIPE_PUBLIC_KEY': settings.STRIPE_PUBLIC_KEY,})
+    
+class RentHistory(LoginRequiredMixin, PermissionRequiredMixin, View):
+    login_url = '/authen/login/'
+    permission_required = "myrental.view_rental"  
+    def get(self, request):
+        rentals = Rental.objects.filter(customer__user=request.user)
+        return render(request, 'rent-history.html', {'rentals' : rentals })
