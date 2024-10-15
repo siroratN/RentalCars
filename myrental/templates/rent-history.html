@@ -1,0 +1,49 @@
+{% extends 'layout.html' %}
+{% block title %}Rent History{% endblock title %}
+{% block head %}{% endblock head %}
+{% block nav %}{% include 'nav.html' %}{% endblock nav %}
+{% block content %}
+    <div class="mt-12">
+        <h2 class="text-center font-bold text-2xl mb-4">ประวัติการจอง</h2>
+        <div class="bg-white p-8 m-9 border border-gray-300 rounded-lg shadow-lg max-w-2xl mx-auto">
+            {% if rentals %}
+                {% for rental in rentals %}
+                    <div class="mb-6 border p-4 rounded-lg shadow">
+                        <h1 class="text-lg font-bold">หมายเลขการจอง : {{ rental.id }}</h1>
+                        <table class="table-auto w-full">
+                            <thead>
+                                <tr>
+                                    <th class="px-4 py-2">ยี่ห้อ</th>
+                                    <th class="px-4 py-2">โมเดล</th>
+                                    <th class="px-4 py-2">วันที่เริ่มต้น</th>
+                                    <th class="px-4 py-2">วันที่สิ้นสุด</th>
+                                    <th class="px-4 py-2">สถานะ</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% if rental.rental_car_set.count > 0 %}
+                                    {% for rental_car in rental.rental_car_set.all %}
+                                        <tr>
+                                            <td class="text-center px-4 py-2">{{ rental_car.car.make }}</td>
+                                            <td class="text-center px-4 py-2">{{ rental_car.car.model }}</td>
+                                            <td class="text-center px-4 py-2">{{ rental_car.start_date }}</td>
+                                            <td class="text-center px-4 py-2">{{ rental_car.end_date }}</td>
+                                            <td class="text-center px-4 py-2">{{ rental.status }}</td>
+                                        </tr>
+                                    {% endfor %}
+                                {% else %}
+                                    <tr>
+                                        <td colspan="5" class="text-center border px-4 py-2">ไม่มีรถที่จองในหมายเลขนี้</td>
+                                    </tr>
+                                {% endif %}
+                            </tbody>
+                        </table>
+                        <h1 class="text-lg">สถานะการเช่ารถ : {{ rental.status }}</h1>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <p class="text-center">ไม่มีประวัติการจอง</p>
+            {% endif %}
+        </div>
+    </div>
+{% endblock content %}

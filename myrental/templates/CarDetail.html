@@ -53,15 +53,17 @@
                                     </li>
                                 {% endfor %}
                             </ul>
+                            {% if user.is_authenticated %}
                             <a href="{% url 'confirm' pk=car.id %}" onclick="setCar('{{start_date}}', '{{end_date}}', this)"
-                            data-car-id="{{ car.id }}" 
-                            data-car-make="{{ car.make }}" 
-                            data-car-model="{{ car.model }}" 
-                            data-car-year="{{ car.year }}" 
-                            data-car-price="{{ car.price_per_day }}"
-                            class="py-4 text-lg font-semibold text-white bg-indigo-600 rounded-full shadow-md rent-button">
+                               data-car-id="{{ car.id }}" 
+                               data-car-make="{{ car.make }}" 
+                               data-car-model="{{ car.model }}" 
+                               data-car-year="{{ car.year }}" 
+                               data-car-price="{{ car.price_per_day }}"
+                               class="py-4 text-lg font-semibold text-white bg-indigo-600 rounded-full shadow-md rent-button">
                                 เช่า
                             </a>
+                        {% endif %}
                         </div>
                     </div>
                 </div>

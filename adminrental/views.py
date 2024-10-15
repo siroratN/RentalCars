@@ -7,7 +7,7 @@ from django.http import JsonResponse
 
 class RentalListView(LoginRequiredMixin, PermissionRequiredMixin, View):
     login_url = '/authen/login/'
-    permission_required = "myrental.view_rental"  
+    permission_required = "myrental.view_rental"
 
     def get(self, request):
         rentals = Rental.objects.all().order_by('rental_car__start_date')
@@ -75,7 +75,7 @@ class AddCar(LoginRequiredMixin, PermissionRequiredMixin, View):
         form = UpdateCarForm()
         return render(request, "add-car.html", {"form": form})
 
-    def post(self, request, pk):
+    def post(self, request):
         form = UpdateCarForm(request.POST, request.FILES)
 
         if form.is_valid():

@@ -1,3 +1,4 @@
+from django.contrib.auth.models import Group
 from django.shortcuts import render, redirect
 from django.contrib.auth import logout, login
 from django.contrib import messages
@@ -41,6 +42,8 @@ class RegisterView(View):
                 address=user_form.cleaned_data['address']
             )
             customer.save()
+            user_group = Group.objects.get(name='User')
+            user.groups.add(user_group)
             return redirect('login')
         return render(request, 'register.html', {'user_form': user_form})
 
