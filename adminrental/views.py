@@ -2,7 +2,8 @@ from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMix
 from django.views import View
 from django.shortcuts import render, redirect
 from myrental.models import Rental, Customer, CategoryCar, Car
-from .forms import UpdateCarForm
+from django.contrib.auth.models import Group
+from .forms import UpdateCarForm, AddEmployeeForm
 from django.http import JsonResponse
 
 class RentalListView(LoginRequiredMixin, PermissionRequiredMixin, View):
@@ -21,6 +22,27 @@ class RentalSearch(LoginRequiredMixin, PermissionRequiredMixin, View):
         search = request.GET.get('search')
         rental = Rental.objects.filter(rental_car__car__make__icontains=search)
         return render(request, "manage-rent.html", {'rentals': rental})
+    
+class AddEmployee(LoginRequiredMixin, PermissionRequiredMixin, View):
+    login_url = '/authen/login/'
+    permission_required = "myrental.add_user"
+
+    def get(self, request):
+        form = AddEmployeeForm()
+        return render(request, "add-employee.html", {"form": form})
+
+    def post(self, request):
+        form = AddEmployeeForm(request.POST)
+
+        if form.is_valid():
+            form = form.save()
+
+            employee_group = Group.objects.get(name="Employee")
+            form.groups.add(employee_group)
+
+            return redirect('rental_info')
+
+        return render(request, "add-employee.html", {"form": form})
 
 class CustomerInfo(LoginRequiredMixin, PermissionRequiredMixin, View):
     login_url = '/authen/login/'

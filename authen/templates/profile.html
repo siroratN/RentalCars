@@ -1,6 +1,19 @@
 {% extends "layout.html" %}
 {% load widget_tweaks %}
-{% block nav %}{% include 'nav.html' %}{% endblock nav %}
+{% load custom_filters %}
+
+{% block nav %}
+{% if user.is_authenticated and user.groups.filter(name='Employee').exists %}
+    {% include 'navadmin.html' %}
+{% endif %}
+
+
+{% if user.is_authenticated %}
+    {% include 'nav.html' %}
+{% endif %}
+{% endblock nav %}  
+
+
 {% block content %}
 <body class="bg-gray-100">
     <div class="mx-auto mt-10">

@@ -88,7 +88,7 @@
         box-shadow: 0 0 50px 0 rgba(0, 0, 0, 0.2);
         padding: 20px;
         width: 400px;
-        margin-right: 20px; /* Space between form and image */
+        margin-right: 20px;
     }
 
     .image-box {
@@ -97,22 +97,22 @@
         border-radius: 25px;
         box-shadow: 0 0 50px 0 rgba(0, 0, 0, 0.2);
         padding: 20px;
-        width: 500px; /* Width for the image box */
-        height: 500px; /* Height for the image box */
+        width: 500px; 
+        height: 500px;
         display: flex;
         justify-content: center;
         align-items: center;
-        overflow: hidden; /* To avoid overflow if the image is large */
+        overflow: hidden; 
     }
 
     .image-box img {
-        max-width: 100%; /* Responsive image */
-        max-height: 100%; /* Maintain aspect ratio */
-        border-radius: 15px; /* Rounded corners for the image */
+        max-width: 100%;
+        max-height: 100%;
+        border-radius: 10px;
     }
 
     .input-field {
-        margin-bottom: 15px; /* Spacing between input fields */
+        margin-bottom: 15px;
     }
 
     .input-field label {
@@ -128,7 +128,7 @@
     }
 
     .input-field input[type="file"] {
-        padding: 5px; /* Adjust padding for file input */
+        padding: 5px;
     }
 
     .submit-button {
@@ -142,7 +142,7 @@
     }
 
     .submit-button:hover {
-        background-color: #000000; /* Darker shade on hover */
+        background-color: #000000; 
     }
 
     .minimal-input {
@@ -201,7 +201,7 @@
             
                 <div class="input-field">
                     <label for="make">Make:</label>
-                    {{ form.make|add_class:"minimal-input" }}  <!-- เพิ่มคลาส CSS minimal-input -->
+                    {{ form.make|add_class:"minimal-input" }}  
                 </div>
             
                 <div class="input-field">
@@ -231,7 +231,7 @@
             
                 <div class="input-field">
                     <label for="feature">Features:</label>
-                    {{ form.feature|add_class:"minimal-checkbox" }}  <!-- แสดง feature แบบ minimal checkbox -->
+                    {{ form.feature|add_class:"minimal-checkbox" }}
                 </div>
             
                 <div class="input-field">

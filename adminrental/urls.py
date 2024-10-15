@@ -6,8 +6,10 @@ from django.conf.urls.static import static
 urlpatterns = [
     path('rental/', views.RentalListView.as_view(), name='rental_info'),
     path("rental/search", views.RentalSearch.as_view(), name="rental_search"),
-    
     path('rental/customer/<int:pk>', views.CustomerInfo.as_view(), name='customer_info'),
+    
+    path('rental/addemployee/', views.AddEmployee.as_view(), name='add_employee'),      
+
 
     path('category/', views.ManageCar.as_view(), name="manage_car"),
     path('category/<int:pk>/', views.SelectCategory.as_view(), name="catcar_id"),

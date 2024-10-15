@@ -4,55 +4,55 @@
 {% block nav %}{% include 'navadmin.html' %}{% endblock nav %}
 {% block content %}
     <div class="text-center mt-12">
-        <h1 class="text-2xl font-bold">EDIT CAR</h1>
+        <h1 class="text-2xl font-bold">แก้ไขรถ</h1>
     </div>
 
     <div class="flex justify-center items-center mt-10 mb-10">
         <div class="bg-white rounded-3xl shadow-2xl p-8 ">
-            <h1 class="text-center text-xl font-semibold">CAR INFORMATION</h1>
+            <h1 class="text-center text-xl font-semibold">ข้อมูลรถ</h1>
             <br>
             <form method="POST" enctype="multipart/form-data">
                 {% csrf_token %}
                 {{ form.non_field_errors }}
 
                 <div class="mb-5">
-                    <label for="make" class="block mb-1">Make:</label>
+                    <label for="make" class="block mb-1">ยี่ห้อ : </label>
                     {{ form.make|add_class:"w-full p-2 border border-gray-300 rounded-md bg-gray-50" }}
                 </div>
 
                 <div class="mb-5">
-                    <label for="model" class="block mb-1">Model:</label>
+                    <label for="model" class="block mb-1">รุ่น : </label>
                     {{ form.model|add_class:"w-full p-2 border border-gray-300 rounded-md bg-gray-50" }}
                 </div>
 
                 <div class="mb-5">
                     <div class="text-red-700">{{ form.year.errors }}</div>
-                    <label for="year" class="block mb-1">Year:</label>
+                    <label for="year" class="block mb-1">ปี : </label>
                     {{ form.year|add_class:"w-full p-2 border border-gray-300 rounded-md bg-gray-50" }}
                 </div>
 
                 <div class="mb-5">
-                    <label for="price_per_day" class="block mb-1">Price per Day:</label>
+                    <label for="price_per_day" class="block mb-1">ราคาต่อวัน : </label>
                     {{ form.price_per_day|add_class:"w-full p-2 border border-gray-300 rounded-md bg-gray-50" }}
                 </div>
 
                 <div class="mb-5">
-                    <label for="description" class="block mb-1">Description:</label>
+                    <label for="description" class="block mb-1">รายละเอียด : </label>
                     {{ form.description|add_class:"w-full p-2 border border-gray-300 rounded-md bg-gray-50" }}
                 </div>
 
                 <div class="mb-5">
-                    <label for="category" class="block mb-1">Category:</label>
+                    <label for="category" class="block mb-1">ประเภทรถ : </label>
                     {{ form.category|add_class:"w-full p-2 border border-gray-300 rounded-md bg-gray-50" }}
                 </div>
 
                 <div class="mb-5">
-                    <label for="feature" class="block mb-1">Features:</label>
+                    <label for="feature" class="block mb-1">คุณสมบัติ :</label>
                     {{ form.feature|add_class:"w-full p-2" }}
                 </div>
                 
                 <div class="mb-5">
-                    <label for="image" class="block mb-1">Current Image:</label>
+                    <label for="image" class="block mb-1">ภาพปัจจุบัน :</label>
                     {% if car.image %}
                         <div class="w-48 h-24 border">
                             <img src="{{ car.image.url }}" alt="Car Image" class="object-fill w-full h-full">
@@ -63,13 +63,13 @@
                 </div>
 
                 <div class="mb-5">
-                    <label for="image" class="block mb-1">Upload Image:</label>
+                    <label for="image" class="block mb-1">อัพโหลดรูปภาพ :</label>
                     {{ form.image|add_class:"w-full p-2 bg-gray-50 text-sm border rounded-lg" }}
                 </div>
-                <button type="submit" class="ml-24 w-24 bg-green-600 text-white py-2 px-4 rounded-md hover:bg-green-700">Submit</button>
+                <button type="submit" class="ml-24 w-24 bg-green-600 text-white py-2 px-4 rounded-md hover:bg-green-700">ยืนยัน</button>
             </form>
-        {% if request.user.is_superuser %} 
-            <button type="submit" class="mt-2 ml-16 w-38 bg-red-600 text-white py-2 px-4 rounded-md hover:bg-red-700" onclick="removeCar({{ car.id }}, '{{ csrf_token }}')">DELETE THIS CAR</button>
+        {% if request.user.is_staff %} 
+            <button type="submit" class="mt-2 ml-24 w-38 bg-red-600 text-white py-2 px-4 rounded-md hover:bg-red-700" onclick="removeCar({{ car.id }}, '{{ csrf_token }}')">ลบรถคันนี้</button>
         {% endif %}
         </div>
     </div>

@@ -48,13 +48,11 @@ class RegisterView(View):
             return redirect('login')
         return render(request, 'register.html', {'user_form': user_form})
 
-
-
 class LogoutView(View):
     def get(self, request):
         logout(request)
         return render(request, 'login.html')
-    
+   
 class ProfileView(View):
     def get(self, request):
         user_form = UserProfileForm(instance=request.user)
