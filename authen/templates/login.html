@@ -18,7 +18,6 @@
           {% csrf_token %}
           <h3 class="mb-3 text-3xl font-extrabold text-center text-gray-800">เข้าสู่ระบบ</h3>
           <div>
-            {{ form.username.errors }}
             <label class="text-gray-800 text-[15px] mb-2 block">Username</label>
             <div class="relative flex items-center">
               <input name="username" type="text" required class="w-full text-sm text-gray-800 bg-gray-100 focus:bg-transparent px-4 py-3.5 rounded-md outline-blue-600" placeholder="username" />
@@ -30,7 +29,6 @@
           </div>
 
           <div class="mt-4">
-            {{ form.password.errors }}
             <label class="text-gray-800 text-[15px] mb-2 block">Password</label>
             <div class="relative flex items-center">
               <input name="password" type="password" required class="w-full text-sm text-gray-800 bg-gray-100 focus:bg-transparent px-4 py-3.5 rounded-md outline-blue-600" placeholder="password" />

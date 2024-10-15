@@ -158,6 +158,15 @@ class RentalViewFirst(LoginRequiredMixin, PermissionRequiredMixin, View):
             'start_date': start_date,
             'end_date': end_date,
         })
+
+def filter_cars(available_cars, categories, brands, features, price):
+            if categories:
+                available_cars = available_cars.filter(category__id__in=categories)
+            if brands:
+                available_cars = available_cars.filter(make__in=brands)
+            if features:
+                available_cars = available_cars.filter(feature__id__in=features)
+            return available_cars.filter(price_per_day__lte=price)
         
 class FilterView(LoginRequiredMixin, PermissionRequiredMixin, View):
     login_url = '/authen/login/'

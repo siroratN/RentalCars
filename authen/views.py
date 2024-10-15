@@ -18,7 +18,6 @@ class LoginView(View):
         if form.is_valid():
             user = form.get_user() 
             login(request, user)
-
             if user.is_staff:
                 return redirect('rental_info')
             else:
