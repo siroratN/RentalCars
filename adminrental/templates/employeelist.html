@@ -1,0 +1,83 @@
+{% extends "layout.html" %}
+{% block title %}Manage Rent{% endblock title %}
+{% block head %}
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse; /* Prevents borders from doubling */
+        }
+
+        th {
+            padding: 10px;
+            text-align: center;
+            background-color: #FFFFFF; /* White background for th */
+        }
+
+        td {
+            padding: 10px;
+            text-align: center;
+        }
+    </style>
+{% endblock head %}
+{% block nav %}{% include 'navadmin.html' %}{% endblock nav %}
+{% block content %}
+    <div class="head text-center mt-12 text-xl">
+        <h1>รายชื่อพนักงาน</h1>
+    </div>
+
+    <div class="box p-8 m-12 border border-gray-300 rounded-lg shadow-lg">
+        <table class="table-auto w-full">
+            <thead>
+                <tr>
+                    <th class="bg-slate-400 border ">ชื่อผู้ใช้</th>
+                    <th class="bg-slate-400 border ">อีเมล</th>
+                    <th class="bg-slate-400 border ">ชื่อเต็ม</th>
+                    <th class="bg-slate-400 border ">วันที่เข้าร่วม</th>
+                    <th class="bg-slate-400 border ">Delete</th>
+                </tr>
+            </thead>
+            <tbody id="tableBody">
+                {% for employee in employees %}
+                    <tr class="hover:bg-gray-50">
+                        <td>{{ employee.username }}</td>
+                        <td>{{ employee.email }}</td>
+                        <td>{{ employee.get_full_name }}</td>
+                        <td>{{ employee.date_joined|date:"d/m/Y" }}</td>
+                        <td><button class="text-red-600" onclick="removeEmployee({{ employee.id }}, '{{ csrf_token }}')"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M22 10.5h-6m-2.25-4.125a3.375 3.375 0 1 1-6.75 0 3.375 3.375 0 0 1 6.75 0ZM4 19.235v-.11a6.375 6.375 0 0 1 12.75 0v.109A12.318 12.318 0 0 1 10.374 21c-2.331 0-4.512-.645-6.374-1.766Z" />
+                        </svg>
+                        </button></td>
+                    </tr>
+                {% empty %}
+                    <tr>
+                        <td colspan="4">ไม่พบพนักงานในกลุ่ม Employee</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock content %}
+{% block script %}
+    <script>
+        async function removeEmployee(employee_id, csrf_token){
+
+            // กำหนด path ให้ถูกต้อง
+            fetch(`/manage/rental/employeelist/delete/${employee_id}/`, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': csrf_token
+                },
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.message) {
+                    alert(data.message)
+                }
+                console.log('Item deleted successfully')
+                window.location.reload();
+            })
+            .catch(error => console.error('Error:', error));
+        }
+    </script>
+{% endblock script%}

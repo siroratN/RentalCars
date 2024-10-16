@@ -2,7 +2,6 @@
 {% block title %}Manage Rent{% endblock title %}
 {% block head %}
     <style>
-        /* Additional styles can be added here if needed */
         table {
             width: 100%;
             border-collapse: collapse; /* Prevents borders from doubling */
@@ -24,13 +23,13 @@
 {% block content %}
     
 
-    <div class="head text-center mt-12">
+    <div class="head text-center mt-12 text-2xl">
         <h1>ข้อมูลการจองรถ</h1>
     </div>
 
     <div class="box p-8 m-12 border border-gray-300 rounded-lg shadow-lg">
         <div class="flex justify-between mb-4">
-            <a href="{% url 'rental_info' %}" class="text-blue-600 hover:underline mx-5">Refresh</a>
+            <a href="{% url 'rental_info' %}" class="text-blue-600 hover:underline mx-5">แสดงทั้งหมด</a>
             <form method="GET" action="{% url 'rental_search' %}">
                 <div class="flex">
                     <input name='search' type="text" id="searchInput" placeholder="ค้นหาข้อมูล..." class="border rounded-lg px-4 py-2 w-2/4 focus:outline-none focus:ring-2 focus:ring-blue-400">
@@ -45,7 +44,8 @@
                     <th class="bg-slate-400 border">ลูกค้า</th>
                     <th class="bg-slate-400 border">วันเริ่มต้น</th>
                     <th class="bg-slate-400 border">วันสิ้นสุด</th>
-                    <th class="bg-slate-400 border">ราคา</th>
+                    <th class="bg-slate-400 border">ราคาทั้งหมด</th>
+                    <th class="bg-slate-400 border">ราคาที่ต้องจ่าย</th>
                     <th class="bg-slate-400 border">สถานะ</th>
                 </tr>
             </thead>
@@ -57,7 +57,8 @@
                             <td><a href="{% url 'customer_info' pk=rental.customer.id %}" class='text-blue-600 underline'>{{ rental.customer.user.username }}</a></td>
                             <td>{{ rental_car.start_date }}</td>
                             <td>{{ rental_car.end_date }}</td>
-                            <td>{{ rental.total_price }}</td>
+                            <td>{{ rental.total_price }} บาท</td>
+                            <td>{{ rental.deposit }} บาท</td>
                             <td>{{ rental.status }}</td>
                         </tr>
                     {% endfor %}

@@ -1,0 +1,167 @@
+{% extends 'layout.html' %}
+{% load widget_tweaks %}
+{% block title %}Add Employee{% endblock %}
+{% block head %}
+    <style>
+    .container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .form-box {
+        background-color: #ffffff;
+        border-radius: 25px;
+        box-shadow: 0 0 50px 0 rgba(0, 0, 0, 0.2);
+        padding: 20px;
+        width: 400px;
+        margin-right: 20px;
+    }
+
+    .image-box {
+        margin-top: -18%;
+        background-color: #ffffff;
+        border-radius: 25px;
+        box-shadow: 0 0 50px 0 rgba(0, 0, 0, 0.2);
+        padding: 20px;
+        width: 500px; 
+        height: 500px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        overflow: hidden; 
+    }
+
+    .image-box img {
+        max-width: 100%;
+        max-height: 100%;
+        border-radius: 10px;
+    }
+
+    .input-field {
+        margin-bottom: 15px;
+    }
+
+    .input-field label {
+        display: block;
+        margin-bottom: 5px;
+    }
+
+    .input-field input {
+        width: 100%;
+        padding: 8px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+    }
+
+    .input-field input[type="file"] {
+        padding: 5px;
+    }
+
+    .submit-button {
+        background-color: #000000;
+        color: white;
+        padding: 10px 15px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 16px;
+    }
+
+    .submit-button:hover {
+        background-color: #000000; 
+    }
+
+    .minimal-input {
+        width: 100%;
+        padding: 8px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        background-color: #f9f9f9;
+        font-size: 14px;
+    }
+
+    .minimal-select {
+        width: 100%;
+        padding: 8px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        background-color: #f9f9f9;
+        font-size: 14px;
+    }
+
+    .minimal-checkbox {
+        margin-top: 10px;
+        padding-left: 5px;
+    }
+
+    .minimal-file-input {
+        border: none;
+        font-size: 14px;
+    }
+
+    .minimal-button {
+        background-color: #4CAF50;
+        color: white;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        font-size: 16px;
+        cursor: pointer;
+    }
+
+    .minimal-button:hover {
+        background-color: #45a049;
+    }
+
+    </style>
+{% endblock head %}
+{% block nav %}{% include "navadmin.html" %}{% endblock nav %}
+{% block content %}
+<div class="container ml-28 mt-10 mb-10" >
+    <div class="form-box " >
+        <h1 class="text-center">ข้อมูลพนักงานใหม่</h1>
+        <br>
+        <form method="POST">
+            {% csrf_token %}
+
+            {{form.username.errors}}
+            <div class="input-field">
+                <label for="make">Username</label>
+                {{ form.username|add_class:"minimal-input" }}  
+            </div>
+
+            {{form.password1.errors}}
+            <div class="input-field">
+                <label for="make">Password</label>
+                {{ form.password1|add_class:"minimal-input" }}  
+            </div>
+
+            {{form.password2.errors}}
+            <div class="input-field">
+                <label for="make">Confirm Password</label>
+                {{ form.password2|add_class:"minimal-input" }}  
+            </div>
+            
+            {{form.first_name.errors}}
+            <div class="input-field">
+                <label for="model">ชื่อจริง</label>
+                {{ form.first_name|add_class:"minimal-input" }}
+            </div>
+            
+            {{form.last_name.errors}}
+            <div class="input-field">
+                <label for="year">นามสกุล</label>
+                {{ form.last_name|add_class:"minimal-input" }}
+            </div>
+            
+            {{form.email.errors}}
+            <div class="input-field">
+                <label for="price_per_day">อีเมล</label>
+                {{ form.email|add_class:"minimal-input" }}
+            </div>
+            <button type="submit" class="minimal-button">เพิ่มพนักงาน</button>
+        </form>
+    </div>
+</div>
+{% endblock content %}

@@ -1,5 +1,7 @@
 from django import forms
-from myrental.models import Car, Feature  # นำเข้าโมเดล Feature ด้วย
+from myrental.models import Car, Feature
+from django.contrib.auth.models import User
+from django.contrib.auth.forms import UserCreationForm
 
 class UpdateCarForm(forms.ModelForm):
     image = forms.ImageField(
@@ -20,3 +22,10 @@ class UpdateCarForm(forms.ModelForm):
         if year and year > 2024:    
             raise forms.ValidationError('Year cannot be in the future.')
         return year
+    
+class AddEmployeeForm(UserCreationForm):
+    class Meta:
+        model = User
+        fields = ['username', 'first_name', 'last_name', 'email', 'password1', 'password2']
+
+    
