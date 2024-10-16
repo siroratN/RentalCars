@@ -37,14 +37,14 @@ class Customer(models.Model):
 
 class Rental(models.Model):
     STATUS_CHOICES = [
-        ('Completed', 'Completed'),
-        ('Canceled', 'Canceled'),
+        ('Complete', 'Complete'),
+        ('Cancel', 'Cancel'),
     ]
 
     customer = models.ForeignKey(Customer, on_delete=models.CASCADE)
     total_price = models.IntegerField()
     status = models.CharField(max_length=10, choices=STATUS_CHOICES)
-
+    checkout_session_id = models.CharField(max_length=255)
 class Rental_car(models.Model):
     rental = models.ForeignKey(Rental, on_delete=models.CASCADE)
     car = models.ForeignKey(Car, on_delete=models.CASCADE)

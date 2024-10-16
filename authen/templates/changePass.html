@@ -3,8 +3,8 @@
 {% block nav %}{% include 'nav.html' %}{% endblock nav %}
 {% block content %}
   <body class="bg-gray-100">
-    <div class="mx-auto mt-40 ">
-      <div class="max-w-md p-8 mx-auto bg-white rounded-lg shadow-md">
+    <div class="mx-auto mt-24 ">
+      <div class="max-w-md p-8 mx-auto bg-white rounded-lg shadow-lg">
         <h1 class="mb-6 text-2xl font-bold text-center">เปลี่ยนรหัสผ่าน</h1>
         <form method="POST">
           {% csrf_token %}
@@ -17,6 +17,7 @@
             <div class="text-red-600">{{ form.new_password1.errors }}</div>
             <label class="text-gray-800 text-[15px] mb-2 block">รหัสผ่านใหม่</label>
             {{ form.new_password1|add_class:'w-full text-sm text-gray-800 bg-gray-100 focus:bg-transparent px-4 py-3.5 rounded-md outline-blue-600'|attr:'placeholder:รหัสผ่านใหม่' }}
+            <div class="text-gray-400">{{ form.new_password1.help_text }}</div>
           </div>
           <div class="mt-4">
             <div class="text-red-600">{{ form.new_password2.errors }}</div>
@@ -37,7 +38,7 @@
             }).then((result) => {
               if (result.isConfirmed) {
                   if (iconType === "success") {
-                      window.location.href = "{% url 'profile' %}";
+                      window.location.href = "{% url 'Date' %}";
                   }
               }
           });

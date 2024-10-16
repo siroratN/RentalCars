@@ -27,7 +27,7 @@
                 <form class="flex items-center" action="{% url 'RentalSearchBar' start_date=start_date end_date=end_date %}" method="GET">
                     <input type="text" id="simple-search" name="car"
                         class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg px-10 p-2.5"
-                        value="{{car_search}}" required />
+                        value="{{car_search}}" />
                     <button type="submit"
                         class="p-2.5 ms-2 text-sm font-medium text-white bg-blue-700 rounded-lg border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300">
                         <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
@@ -42,7 +42,7 @@
         <div class="grid grid-cols-4 gap-8">
             <div class="col-span-1 p-6 bg-white rounded shadow">
                 <div class="flex items-center mb-4">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 text-gray-500">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 text-red-500">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M12 3c2.755 0 5.455.232 8.083.678.533.09.917.556.917 1.096v1.044a2.25 2.25 0 0 1-.659 1.591l-5.432 5.432a2.25 2.25 0 0 0-.659 1.591v2.927a2.25 2.25 0 0 1-1.244 2.013L9.75 21v-6.568a2.25 2.25 0 0 0-.659-1.591L3.659 7.409A2.25 2.25 0 0 1 3 5.818V4.774c0-.54.384-1.006.917-1.096A48.32 48.32 0 0 1 12 3Z" />
                     </svg>
                     <p class="ml-2 text-lg font-semibold">ค้นหาแบบละเอียด</p>
@@ -115,7 +115,7 @@
                     <div class="grid grid-cols-3 gap-7">
                         {% for i in cars %}
                         <div class="w-full max-w-sm transition duration-300 bg-white border border-gray-200 rounded-lg shadow-lg carCards hover:bg-gray-50" carid="{{i.id}}">
-                            <img class="p-8 rounded-t-lg" src="{{ i.image }}" alt="product image" />
+                            <img class="p-8 rounded-t-lg" src="{{ i.image.url }}" alt="product image" />
                             <div class="px-5 pb-5">
                                 <div class="flex items-center justify-between mb-3">
                                     <h5 class="font-semibold tracking-tight text-gray-900 text-md">{{ i.make }} {{ i.model }} {{ i.year }}</h5>

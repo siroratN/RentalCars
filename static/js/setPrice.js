@@ -1,7 +1,7 @@
 function setPrice(STRIPE_PUBLIC_KEY, csrf_token) {
     const stripe = Stripe(STRIPE_PUBLIC_KEY)
     const selectedCars = JSON.parse(localStorage.getItem('selectedCars')) || []
-    const price = selectedCars.reduce((total, car) => {
+    const price = selectedCars.reduce((total, car) => { //หาราคาทั้งหมด
         const startDate = new Date(car.start_date)
         const endDate = new Date(car.end_date)
         const days = Math.ceil((endDate - startDate) / (1000 * 3600 * 24))

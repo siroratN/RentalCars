@@ -11,6 +11,16 @@ class UserRegistrationForm(UserCreationForm):
     class Meta:
         model = User
         fields = ['username', 'first_name', 'last_name', 'email', 'password1', 'password2' ,'phone_number','address']
+    
+    def clean_phone_number(self):
+        phone_number = self.cleaned_data.get('phone_number')
+        if not phone_number.isdigit():
+            raise forms.ValidationError('กรุณากรอกเฉพาะตัวเลขเท่านั้น')
+        
+        if len(phone_number) != 10:
+            raise forms.ValidationError('หมายเลขโทรศัพท์ต้องมี 10 หลัก')
+
+        return phone_number
 
 class UserProfileForm(forms.ModelForm):
     class Meta:
@@ -25,4 +35,8 @@ class CustomerProfileForm(forms.ModelForm):
         phone_number = self.cleaned_data.get('phone_number')
         if not phone_number.isdigit():
             raise forms.ValidationError('กรุณากรอกเฉพาะตัวเลขเท่านั้น')
+        
+        if len(phone_number) != 10:
+            raise forms.ValidationError('หมายเลขโทรศัพท์ต้องมี 10 หลัก')
+
         return phone_number

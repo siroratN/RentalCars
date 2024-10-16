@@ -10,7 +10,9 @@ urlpatterns = [
     path("rental/", views.RentalViewFirst.as_view(), name="Rental"),
     path("rental/<str:start_date>/<str:end_date>/", views.FilterView.as_view(), name="RentalSearch"),
     path("rental/<str:start_date>/<str:end_date>/search/", views.SearchView.as_view(), name="RentalSearchBar"),
+    
     path("rental/history", views.RentHistory.as_view(), name='Rent-History'),
+    path("cancel/<int:rental_id>/", views.Cancel.as_view(), name='cancel_rental'),
 
     path("car/detail/<int:pk>/<str:start_date>/<str:end_date>/", views.CarDetail.as_view(), name="CarDetail"),
     

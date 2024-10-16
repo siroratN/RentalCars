@@ -3,8 +3,9 @@
 
 <nav class="flex items-center justify-between w-full py-4 bg-white/80 text-black border">
     <div class="logo flex items-center pl-12">
-        <img src="https://file.kelleybluebookimages.com/kbb/base/evox/CP/55034/2025-Honda-Civic-front_55034_032_1816x735_RE_cropped.png" alt="" class="w-24">
-    </div>
+      <img src="https://file.kelleybluebookimages.com/kbb/base/evox/CP/55034/2025-Honda-Civic-front_55034_032_1816x735_RE_cropped.png" alt="" class="w-24">
+      </div>
+    
     <nav class="flex items-center pr-7">
         <ul class="flex space-x-12 pr-10">
             <li>
@@ -20,12 +21,7 @@
                   <span class="absolute bottom-0 left-0 w-0 h-[2px] bg-blue-700 transition-all duration-300 group-hover:w-full"></span>
               </a>
             </li>
-            <li>
-              <a href="{% url 'Date' %}" class="relative block px-3 py-2 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 group">
-                  ยกเลิกการจอง
-                  <span class="absolute bottom-0 left-0 w-0 h-[2px] bg-blue-700 transition-all duration-300 group-hover:w-full"></span>
-              </a>
-            </li>
+            
             {% endif %}
           <div class="flex items-center space-x-3 md:order-2 md:space-x-0 rtl:space-x-reverse justify-self-end">
               <button type="button" class="flex text-sm rounded-full md:me-0 focus:ring-4 focus:ring-black" id="user-menu-button" aria-expanded="false" data-dropdown-toggle="user-dropdown" data-dropdown-placement="bottom">

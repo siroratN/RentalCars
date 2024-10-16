@@ -10,10 +10,10 @@
       transition: background-color 0.3s ease, box-shadow 0.3s ease, transform 0.1s ease;
       padding: 9px 24px;
       font-size: 1.125rem;
-      border-radius: 9px;
+      border-radius: 6px;
     }
     .rent-button:hover {
-        background-color: #4c51bf;
+        background-color: #313AE8FF;
         box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2); 
     }
 
@@ -24,13 +24,13 @@
 
 {% block content %}
 <body>
-    <div class="flex items-center justify-center min-h-screen "> 
+    <div class="flex items-center justify-center m-28"> 
         <section class="w-full">
             <div class="max-w-6xl px-6 py-12 mx-auto bg-white rounded-md sm:px-8 lg:px-6">
                 <div class="grid grid-cols-1 gap-12 lg:grid-cols-2">
                     <div class="w-full h-full">
-                        <div class="relative overflow-hidden shadow-lg rounded-2xl">
-                            <img src="{{ car.image }}" alt="{{ car }}" class="object-cover w-full h-full transition-transform duration-500 ease-in-out hover:scale-105">
+                        <div class="relative overflow-hidden shadow-lg rounded">
+                            <img src="{{ car.image.url }}" alt="{{ car }}" class="object-cover w-full h-full transition-transform duration-500 ease-in-out hover:scale-105">
                         </div>
                     </div>
                     <div class="flex items-start justify-center">
@@ -40,13 +40,13 @@
                                 <p class="text-lg text-gray-600">{{ car.description }}</p>
                             </div>
                             <div class="flex flex-col gap-4 mb-10 sm:flex-row sm:items-center">
-                                <h5 class="text-2xl font-semibold text-indigo-600">{{ car.price_per_day | intcomma}} / Day</h5>
+                                <h5 class="text-2xl font-semibold text-blue-600">{{ car.price_per_day | intcomma}} / Day</h5>
                             </div>
                             <p class="mb-4 text-xl font-medium text-gray-900">Features</p>
                             <ul class="mb-10 space-y-3 text-base text-gray-700">
                                 {% for feature in car.feature.all %}
                                     <li class="flex items-center gap-3">
-                                        <svg class="w-5 h-5 text-indigo-600" fill="currentColor" viewBox="0 0 20 20">
+                                        <svg class="w-5 h-5 text-blue-600" fill="currentColor" viewBox="0 0 20 20">
                                             <path d="M10 18a8 8 0 100-16 8 8 0 000 16zm-1-4l6-6-1.414-1.414L9 11.172 6.707 8.879 5.293 10.293l3 3z"/>
                                         </svg>
                                         {{ feature.name }}
@@ -60,7 +60,7 @@
                                data-car-model="{{ car.model }}" 
                                data-car-year="{{ car.year }}" 
                                data-car-price="{{ car.price_per_day }}"
-                               class="py-4 text-lg font-semibold text-white bg-indigo-600 rounded-full shadow-md rent-button">
+                               class="py-4 text-lg font-semibold text-white bg-blue-600 rounded-full shadow-md rent-button">
                                 เช่า
                             </a>
                         {% endif %}

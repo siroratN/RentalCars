@@ -19,7 +19,7 @@ class RentalSearch(LoginRequiredMixin, PermissionRequiredMixin, View):
 
     def get(self, request):
         search = request.GET.get('search')
-        rental = Rental.objects.filter(rental_car__car__make__icontains=search)
+        rental = Rental.objects.filter(customer__user__username__icontains=search)
         return render(request, "manage-rent.html", {'rentals': rental})
 
 class CustomerInfo(LoginRequiredMixin, PermissionRequiredMixin, View):
