@@ -1,0 +1,35 @@
+{% extends 'layout.html' %}
+{% block title %}Customer Info{% endblock title %}
+{% block head %}{% endblock head %}
+{% block nav %}{% include 'navadmin.html' %}{% endblock nav %}
+{% block content %}
+    <div class="text-center mt-12">
+        <h1 class="text-2xl font-bold">รายละเอียดการจอง</h1>
+    </div>
+    {% for cars in rental_detail %}
+
+        <div class="bg-gray-100 p-8 m-9 border border-gray-300 rounded-lg shadow-lg max-w-md mx-auto">
+        
+            <div class="flex justify-between border-b border-gray-300 py-2">
+                <span class="font-bold">วันเริ่มต้น</span>
+                <span>{{ cars.start_date }}</span>
+            </div>
+        
+            <div class="flex justify-between border-b border-gray-300 py-2">
+                <span class="font-bold">วันสิ้นสุด</span>
+                <span>{{ cars.end_date }}</span>
+            </div>
+        
+            <div class="flex justify-between border-b border-gray-300 py-2">
+                <span class="font-bold">รถ</span>
+                <span>{{ cars.car }}</span>
+            </div>
+
+            <div class="flex justify-between border-b border-gray-300 py-2">
+                <span class="font-bold">ราคารถต่อวัน</span>
+                <span>{{ cars.car.price_per_day }}</span>
+            </div>
+        </div>
+    {% endfor %}
+    
+{% endblock content %}

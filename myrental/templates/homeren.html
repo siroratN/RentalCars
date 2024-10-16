@@ -133,7 +133,7 @@
                                 <div class="flex items-center justify-between">
                                     <span class="text-lg font-bold text-gray-900">{{ i.price_per_day|intcomma }}/day</span>
                                     {% if user.is_authenticated %}
-                                        <a href="{% url 'confirm' pk=i.id %}" onclick="setCar('{{start_date}}', '{{end_date}}', this)" 
+                                        <a href="{% url 'confirm' %}" onclick="setCar('{{start_date}}', '{{end_date}}', this)" 
                                             data-car-id="{{ i.id }}" 
                                             data-car-make="{{ i.make }}" 
                                             data-car-model="{{ i.model }}" 

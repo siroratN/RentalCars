@@ -16,7 +16,7 @@ urlpatterns = [
 
     path("car/detail/<int:pk>/<str:start_date>/<str:end_date>/", views.CarDetail.as_view(), name="CarDetail"),
     
-    path("confirm/<int:pk>/", views.ConfirmBill.as_view(), name="confirm"),
+    path("confirm/", views.ConfirmBill.as_view(), name="confirm"),
     
     path("date/", views.DateRental.as_view(), name="Date"),
     

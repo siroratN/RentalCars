@@ -93,7 +93,7 @@
     </form> {% endcomment %}
     <div class="p-12 my-10 border border-gray-300 rounded-lg shadow-lg box">
         <div class="flex justify-between mb-3">
-            <a href="{% url 'manage_car' %}" class="ml-16 text-blue-600 hover:underline">รีเฟรช</a>
+            <a href="{% url 'manage_car' %}" class="ml-16 text-blue-600 hover:underline">แสดงทั้งหมด</a>
             <p class="ml-36 text-2xl text-transparent bg-clip-text bg-gradient-to-r from-pink-500 to-violet-500">{{catpk.name}}</p>
             <form method="get" action="{% url 'category_search' pk=catpk.id %}">
                 <div class="flex">

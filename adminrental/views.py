@@ -1,7 +1,8 @@
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.views import View
+from django.core.exceptions import PermissionDenied
 from django.shortcuts import render, redirect
-from myrental.models import Rental, Customer, CategoryCar, Car
+from myrental.models import *
 from django.contrib.auth.models import Group, User
 from .forms import UpdateCarForm, AddEmployeeForm
 from django.http import JsonResponse
@@ -12,20 +13,40 @@ class RentalListView(LoginRequiredMixin, PermissionRequiredMixin, View):
     permission_required = "myrental.view_rental"
 
     def get(self, request):
-        rentals = Rental.objects.annotate(
-            deposit=(F('total_price') * 80) / 100
-            ).order_by('rental_car__start_date')
-        return render(request, 'manage-rent.html', {'rentals': rentals})
+        if request.user.is_staff:
+            rentals = Rental.objects.annotate(
+                deposit=(F('total_price') * 80) / 100
+                ).distinct()
+            print(rentals)
+
+            return render(request, 'manage-rent.html', {'rentals': rentals})
+        else:
+            raise PermissionDenied
+
+class RentalDetailView(LoginRequiredMixin, PermissionRequiredMixin, View):
+    login_url = '/authen/login/'
+    permission_required = "myrental.view_rental"
+
+    def get(self, request, pk):
+        if request.user.is_staff:
+            rentals = Rental_car.objects.filter(rental_id = pk)
+            print(rentals)
+            return render(request, 'rentaldetail.html', {'rental_detail': rentals})
+        else:
+            raise PermissionDenied
 
 class RentalSearch(LoginRequiredMixin, PermissionRequiredMixin, View):
     login_url = '/authen/login/'
     permission_required = "myrental.view_rental"
 
     def get(self, request):
-        search = request.GET.get('search')
-        print(search)
-        rental = Rental.objects.filter(customer__user__username__icontains=search)
-        return render(request, "manage-rent.html", {'rentals': rental})
+        if request.user.is_staff:
+            search = request.GET.get('search')
+            print(search)
+            rental = Rental.objects.filter(customer__user__username__icontains=search)
+            return render(request, "manage-rent.html", {'rentals': rental})
+        else:
+            raise PermissionDenied
     
 class AddEmployee(LoginRequiredMixin, PermissionRequiredMixin, View):
     login_url = '/authen/login/'
@@ -45,7 +66,7 @@ class AddEmployee(LoginRequiredMixin, PermissionRequiredMixin, View):
             form.is_staff = True
             form = form.save()
 
-            return redirect('rental_info')
+            return redirect('employee_list')
 
         return render(request, "add-employee.html", {"form": form})
 
@@ -63,8 +84,6 @@ class EmployeeList(LoginRequiredMixin, PermissionRequiredMixin, View):
         user = User.objects.get(pk=pk)
         user.delete()
         return JsonResponse({'status': 'success'})
-
-
 
 
 class CustomerInfo(LoginRequiredMixin, PermissionRequiredMixin, View):

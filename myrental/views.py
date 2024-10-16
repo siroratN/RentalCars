@@ -22,8 +22,9 @@ stripe.api_key = settings.STRIPE_SECRET_KEY
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 
 
-class CreateCheckoutSessionView(LoginRequiredMixin, View):
+class CreateCheckoutSessionView(LoginRequiredMixin, PermissionRequiredMixin, View):
     login_url = '/authen/login/'
+    permission_required = ["myrental.add_rental", "myrental.add_rental_car"]
     def post(self, request):
         try:
             YOUR_DOMAIN = 'http://127.0.0.1:8000'
@@ -118,7 +119,7 @@ class Success(LoginRequiredMixin, PermissionRequiredMixin, View):
 
 class Cancel(LoginRequiredMixin, PermissionRequiredMixin, View):
     login_url = '/authen/login/'
-    permission_required = "myrental.view_rental"
+    permission_required = ["myrental.add_rental", "myrental.change_rental"]
     def get(self, request):
         return render(request, 'cancel.html')
     def put(self, request, rental_id):
@@ -283,18 +284,17 @@ class CarDetail(View):
 
 class ConfirmBill(LoginRequiredMixin, PermissionRequiredMixin, View):
     login_url = '/authen/login/'
-    permission_required = "myrental.view_rental"  
-    def get(self, request, pk):
+    permission_required = "myrental.add_rental"  
+    def get(self, request):
         try:
-            car = Car.objects.get(pk=pk)
             cus = Customer.objects.get(user=request.user.id)
-            return render(request, 'confirm.html' , {'car':car,'cus':cus, 'STRIPE_PUBLIC_KEY': settings.STRIPE_PUBLIC_KEY,})
+            return render(request, 'confirm.html' , {'cus':cus, 'STRIPE_PUBLIC_KEY': settings.STRIPE_PUBLIC_KEY,})
         except Exception as e:
             return JsonResponse({'error': str(e)}, status=400)
     
 class RentHistory(LoginRequiredMixin, PermissionRequiredMixin, View):
     login_url = '/authen/login/'
-    permission_required = ["myrental.view_rental", "myrental.view_rental_car"]
+    permission_required = ["myrental.view_rental", "myrental.add_rental"]
     
     def get(self, request):
         try:
