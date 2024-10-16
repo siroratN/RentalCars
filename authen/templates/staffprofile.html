@@ -1,6 +1,6 @@
 {% extends "layout.html" %}
 {% load widget_tweaks %}
-
+{% block title %}Staff Profile{% endblock title %}
 {% block nav %}
 {% if user.is_authenticated and user.is_staff %}
     {% include 'navadmin.html' %}

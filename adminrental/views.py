@@ -14,7 +14,7 @@ class RentalListView(LoginRequiredMixin, PermissionRequiredMixin, View):
     def get(self, request):
         rentals = Rental.objects.annotate(
             deposit=(F('total_price') * 80) / 100
-            ).order_by('rental_car__start_date')
+            ).order_by('rental_car__start_date').distinct
         return render(request, 'manage-rent.html', {'rentals': rentals})
 
 class RentalSearch(LoginRequiredMixin, PermissionRequiredMixin, View):

@@ -40,6 +40,7 @@
         <table class="table-auto w-full">
             <thead>
                 <tr>
+                    <th class="bg-slate-400 border">รหัสการจอง</th>
                     <th class="bg-slate-400 border">รถ</th>
                     <th class="bg-slate-400 border">ลูกค้า</th>
                     <th class="bg-slate-400 border">วันเริ่มต้น</th>
@@ -53,6 +54,7 @@
                 {% for rental in rentals %}
                     {% for rental_car in rental.rental_car_set.all %}
                         <tr class="hover:bg-gray-50">
+                            <td>{{ rental.id }}</td>
                             <td>{{ rental_car.car.make }} {{ rental_car.car.model }}</td>
                             <td><a href="{% url 'customer_info' pk=rental.customer.id %}" class='text-blue-600 underline'>{{ rental.customer.user.username }}</a></td>
                             <td>{{ rental_car.start_date }}</td>
