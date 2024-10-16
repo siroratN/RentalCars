@@ -52,7 +52,7 @@ class LogoutView(View):
     def get(self, request):
         logout(request)
         return render(request, 'login.html')
-   
+    
 class ProfileView(View):
     def get(self, request):
         user_form = UserProfileForm(instance=request.user)
@@ -78,6 +78,22 @@ class ProfileView(View):
             'customer_form': customer_form,
             'message': message
         })
+    
+class StaffProfileView(View):
+    def get(self, request):
+        user_form = UserProfileForm(instance=request.user)
+        return render(request, 'staffprofile.html', {'user_form':user_form})
+    
+    def post(self, request):
+        user_form = UserProfileForm(request.POST, instance=request.user)
+
+        if user_form.is_valid():
+            user_form.save()
+            message = 'บันทึกการเปลี่ยนแปลงเรียบร้อย!'
+        else:
+            message = 'ผิดพลาดในการบันทึก!'
+        return render(request, 'staffprofile.html', {'user_form': user_form,
+                                                'message': message})
     
 class PasswordChangeView(View):
     def get(self, request):

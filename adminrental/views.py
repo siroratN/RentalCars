@@ -2,16 +2,19 @@ from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMix
 from django.views import View
 from django.shortcuts import render, redirect
 from myrental.models import Rental, Customer, CategoryCar, Car
-from django.contrib.auth.models import Group
+from django.contrib.auth.models import Group, User
 from .forms import UpdateCarForm, AddEmployeeForm
 from django.http import JsonResponse
+from django.db.models import F
 
 class RentalListView(LoginRequiredMixin, PermissionRequiredMixin, View):
     login_url = '/authen/login/'
     permission_required = "myrental.view_rental"
 
     def get(self, request):
-        rentals = Rental.objects.all().order_by('rental_car__start_date')
+        rentals = Rental.objects.annotate(
+            deposit=(F('total_price') * 80) / 100
+            ).order_by('rental_car__start_date')
         return render(request, 'manage-rent.html', {'rentals': rentals})
 
 class RentalSearch(LoginRequiredMixin, PermissionRequiredMixin, View):
@@ -20,12 +23,13 @@ class RentalSearch(LoginRequiredMixin, PermissionRequiredMixin, View):
 
     def get(self, request):
         search = request.GET.get('search')
-        rental = Rental.objects.filter(rental_car__car__make__icontains=search)
+        print(search)
+        rental = Rental.objects.filter(customer__user__username__icontains=search)
         return render(request, "manage-rent.html", {'rentals': rental})
     
 class AddEmployee(LoginRequiredMixin, PermissionRequiredMixin, View):
     login_url = '/authen/login/'
-    permission_required = "myrental.add_user"
+    permission_required = "auth.add_user"
 
     def get(self, request):
         form = AddEmployeeForm()
@@ -36,13 +40,32 @@ class AddEmployee(LoginRequiredMixin, PermissionRequiredMixin, View):
 
         if form.is_valid():
             form = form.save()
-
             employee_group = Group.objects.get(name="Employee")
             form.groups.add(employee_group)
+            form.is_staff = True
+            form = form.save()
 
             return redirect('rental_info')
 
         return render(request, "add-employee.html", {"form": form})
+
+class EmployeeList(LoginRequiredMixin, PermissionRequiredMixin, View):
+    login_url = '/authen/login/'
+    permission_required = ['auth.view_user', 'auth.delete_user']
+    def get(self, request):
+        employee_group = Group.objects.get(name="Employee")
+        employees = employee_group.user_set.all()
+        return render(request, 'employeelist.html', {
+            'employees': employees
+        })
+    
+    def delete(self, request, pk):
+        user = User.objects.get(pk=pk)
+        user.delete()
+        return JsonResponse({'status': 'success'})
+
+
+
 
 class CustomerInfo(LoginRequiredMixin, PermissionRequiredMixin, View):
     login_url = '/authen/login/'

@@ -14,7 +14,15 @@
                 <span class="absolute bottom-0 left-0 w-0 h-[2px] bg-blue-700 transition-all duration-300 group-hover:w-full">
                 </span></a>
             </li>
-            {% if user.is_authenticated and user.is_staff %}
+            <li><a href="{% url 'add_car' %}" class="relative block px-3 py-2 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 group">เพิ่มรถ
+              <span class="absolute bottom-0 left-0 w-0 h-[2px] bg-blue-700 transition-all duration-300 group-hover:w-full">
+              </span></a>
+            </li>
+            {% if perms.auth.view_user or perms.auth.add_user %} 
+            <li><a href="{% url 'employee_list' %}" class="relative block px-3 py-2 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 group">รายชื่อพนักงาน
+              <span class="absolute bottom-0 left-0 w-0 h-[2px] bg-blue-700 transition-all duration-300 group-hover:w-full">
+              </span></a>
+            </li>
             <li><a href="{% url 'add_employee' %}" class="relative block px-3 py-2 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 group">เพิ่มพนักงาน
               <span class="absolute bottom-0 left-0 w-0 h-[2px] bg-blue-700 transition-all duration-300 group-hover:w-full">
               </span></a>
@@ -29,11 +37,12 @@
                 </button>
       <div class="hidden bg-white list-none divide-gray-100 rounded-lg shadow borde" id="user-dropdown">
         <div class="px-4 py-3">
+          <span class="block text-sm text-gray-900">{{ user.username }}</span>
           <span class="block text-sm text-gray-900">{{ user.first_name }} {{ user.last_name }}</span>
           <span class="block text-sm text-gray-500 truncate dark:text-gray-400">{{ user.email }}</span>
         </div>
         <ul class="py-2" aria-labelledby="user-menu-button">
-          <li><a href="{% url 'profile' %}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-200">โปรไฟล์ผู้ใช้</a></li>
+          <li><a href="{% url 'staffprofile' %}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-200">โปรไฟล์ผู้ใช้</a></li>
           <li><a href="{% url 'pass' %}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-200">เปลี่ยนรหัสผ่าน</a></li>
           <li><a href="{% url 'logout' %}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-200">ออกจากระบบ</a></li>
         </ul>

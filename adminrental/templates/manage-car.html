@@ -61,7 +61,7 @@
 {% block nav %}{% include 'navadmin.html' %}{% endblock nav %}
 {% block content %}    
     <div class="head" style="text-align: center; margin-top: 50px;">
-        <h1 class="">ประเภทรถ</h1>
+        <h1 class="text-2xl">ประเภทรถ</h1>
     </div>
 
     <div class="grid grid-cols-5 gap-5" style="margin: 5% 10% 10% 10%;">
@@ -85,10 +85,12 @@
             {% endif %}
         {% endfor %}
     </div>
-    <form method="POST" action="{% url 'add_car' %}">
+    {% comment %} <form method="POST" action="{% url 'add_car' %}" class="flex justify-center mt-12">
         {% csrf_token %}
-        <button type="submit" class="px-4 h-11 mt-12 ml-  text-white transition duration-100 bg-green-500 rounded-lg hover:bg-green-600">เพิ่มรถ</button>
-    </form>
+        <button type="submit" class="px-6 py-2 text-white transition duration-100 bg-green-500 rounded-lg hover:bg-green-600">
+            เพิ่มรถ
+        </button>
+    </form> {% endcomment %}
     <div class="p-12 my-10 border border-gray-300 rounded-lg shadow-lg box">
         <div class="flex justify-between mb-3">
             <a href="{% url 'manage_car' %}" class="ml-16 text-blue-600 hover:underline">รีเฟรช</a>
@@ -115,7 +117,7 @@
                 <tr class="hover:bg-gray-50">
                     <td>{{ carlist.make }}</td>
                     <td>{{ carlist.model }}</td>
-                    <td>{{ carlist.price_per_day }}</td>
+                    <td>{{ carlist.price_per_day }} บาท</td>
                     <td><a href="{% url 'edit_car' pk=carlist.id %}" class="-mx-16 px-3 py-1 text-blue-600 border rounded-lg hover:underline">ข้อมูลเพิ่มเติม</a></td>
                 </tr>
                 {% endfor %}
