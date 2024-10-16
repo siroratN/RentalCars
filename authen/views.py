@@ -10,15 +10,16 @@ from django.contrib.auth import update_session_auth_hash
 from django.contrib.auth.forms import PasswordChangeForm
 
 class LoginView(View):
-    
+
     def get(self, request):
-        form = AuthenticationForm()
+        form = AuthenticationForm() # form ของ django 
         return render(request, 'login.html', {"form": form})
+    
     def post(self, request):
         form = AuthenticationForm(data=request.POST)
         if form.is_valid():
             user = form.get_user() 
-            login(request, user)
+            login(request, user) # สร้าง session 
             if user.is_staff:
                 return redirect('rental_info')
             else:
@@ -41,7 +42,6 @@ class RegisterView(View):
                 phone_number=user_form.cleaned_data['phone_number'],
                 address=user_form.cleaned_data['address']
             )
-            customer.save()
             user_group = Group.objects.get(name='User')
             user.groups.add(user_group)
             return redirect('login')

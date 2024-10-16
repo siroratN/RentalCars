@@ -45,6 +45,7 @@ class Rental(models.Model):
     total_price = models.IntegerField()
     status = models.CharField(max_length=10, choices=STATUS_CHOICES)
     checkout_session_id = models.CharField(max_length=255)
+    
 class Rental_car(models.Model):
     rental = models.ForeignKey(Rental, on_delete=models.CASCADE)
     car = models.ForeignKey(Car, on_delete=models.CASCADE)

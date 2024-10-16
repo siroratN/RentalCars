@@ -31,7 +31,7 @@ class CreateCheckoutSessionView(LoginRequiredMixin, PermissionRequiredMixin, Vie
             data = json.loads(request.body)
             price = data.get('price')
             car_ids = data.get('car_id')
-            print('yyy',car_ids)
+            print('list',car_ids)
             start_dates = data.get('start_date')
             end_dates = data.get('end_date')
             print(start_dates)
@@ -198,9 +198,9 @@ class FilterView(View):
 
     def get(self, request, start_date, end_date):
         try:
-            cate = CategoryCar.objects.all().distinct()
+            cate = CategoryCar.objects.all()
             car = Car.objects.values('make').distinct()
-            feature = Feature.objects.all().distinct()
+            feature = Feature.objects.all()
             
             selected_categories = [int(cat_id) for cat_id in request.GET.getlist('categories')]
             print(selected_categories)
@@ -210,8 +210,8 @@ class FilterView(View):
             selected_price = int(selected_price) if selected_price else 8500
             print(selected_price)
             
-            datetime.datetime.strptime(start_date, "%Y-%m-%d").date()
-            datetime.datetime.strptime(end_date, "%Y-%m-%d").date()
+            datetime.strptime(start_date, "%Y-%m-%d").date()
+            datetime.strptime(end_date, "%Y-%m-%d").date()
             available_cars = get_available_cars(start_date, end_date)
             
             available_cars = filter_cars(get_available_cars(start_date, end_date), selected_categories, selected_brands, selected_features, selected_price)
@@ -240,14 +240,14 @@ class FilterView(View):
 class SearchView( View):
         def get(self, request, start_date, end_date):
             try:
-                cate = CategoryCar.objects.all().distinct()
+                cate = CategoryCar.objects.all()
                 car = Car.objects.values('make').distinct()
-                feature = Feature.objects.all().distinct()
+                feature = Feature.objects.all()
                 
                 car_search = request.GET.get('car')
                 
-                datetime.datetime.strptime(start_date, "%Y-%m-%d").date()
-                datetime.datetime.strptime(end_date, "%Y-%m-%d").date()
+                datetime.strptime(start_date, "%Y-%m-%d").date()
+                datetime.strptime(end_date, "%Y-%m-%d").date()
                 
                 available_cars = get_available_cars(start_date, end_date).filter(make__icontains=car_search)
                 print(available_cars)
@@ -273,8 +273,8 @@ class SearchView( View):
 class CarDetail(View):
     def get(self, request, pk, start_date, end_date):
         try:
-            datetime.datetime.strptime(start_date, "%Y-%m-%d").date()
-            datetime.datetime.strptime(end_date, "%Y-%m-%d").date()
+            datetime.strptime(start_date, "%Y-%m-%d").date()
+            datetime.strptime(end_date, "%Y-%m-%d").date()
             print('check')
             print(end_date)
             car = Car.objects.get(pk=pk)

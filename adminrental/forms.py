@@ -2,15 +2,16 @@ from django import forms
 from myrental.models import Car, Feature
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
+from datetime import datetime
 
 class UpdateCarForm(forms.ModelForm):
     image = forms.ImageField(
-        widget=forms.FileInput(attrs={})  # Set your Tailwind classes here
+        widget=forms.FileInput() 
     )
     feature = forms.ModelMultipleChoiceField(
-        queryset=Feature.objects.all(),  # ดึงข้อมูลฟีเจอร์ทั้งหมด
-        required=False,  # ทำให้ฟิลด์ feature เป็น optional
-        widget=forms.CheckboxSelectMultiple()  # ทำให้ feature เป็นแบบ multiple choice
+        queryset=Feature.objects.all(),
+        required=False,
+        widget=forms.CheckboxSelectMultiple()
     )
 
     class Meta:
@@ -19,8 +20,8 @@ class UpdateCarForm(forms.ModelForm):
 
     def clean_year(self):
         year = self.cleaned_data.get('year')
-        if year and year > 2024:    
-            raise forms.ValidationError('Year cannot be in the future.')
+        if year and year > datetime.now().year:    
+            raise forms.ValidationError('ไม่สามารถเป็นปีในอนาคตได้')
         return year
     
 class AddEmployeeForm(UserCreationForm):

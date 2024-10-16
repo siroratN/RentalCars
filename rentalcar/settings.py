@@ -146,6 +146,8 @@ EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = '65070217@kmitl.ac.th'  
 EMAIL_HOST_PASSWORD = 'ooto yxoj nodc mfjy' 
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+
 
 MEDIA_URL = '/media/'  # URL สำหรับเข้าถึงไฟล์มีเดีย
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')  # โฟลเดอร์ที่เก็บไฟล์มีเดีย

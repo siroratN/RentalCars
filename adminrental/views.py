@@ -16,7 +16,7 @@ class RentalListView(LoginRequiredMixin, PermissionRequiredMixin, View):
         if request.user.is_staff:
             rentals = Rental.objects.annotate(
                 deposit=(F('total_price') * 80) / 100
-                ).distinct()
+                )
             print(rentals)
 
             return render(request, 'manage-rent.html', {'rentals': rentals})
@@ -127,6 +127,18 @@ class CategorySearch(LoginRequiredMixin, PermissionRequiredMixin, View):
         category = CategoryCar.objects.all()
         catpk = CategoryCar.objects.get(id=pk)
         carlists = Car.objects.filter(category_id=pk, make__icontains=search)
+        return render(request, "manage-car.html", {'category': category,
+                                                   'carlists': carlists,
+                                                   'catpk': catpk})
+
+class RefreshSearch(LoginRequiredMixin, PermissionRequiredMixin, View):
+    login_url = '/authen/login'
+    permission_required = "myrental.view_car"
+
+    def get(self, request, pk):
+        category = CategoryCar.objects.all()
+        catpk = CategoryCar.objects.get(id=pk)
+        carlists = Car.objects.filter(category_id=pk)
         return render(request, "manage-car.html", {'category': category,
                                                    'carlists': carlists,
                                                    'catpk': catpk})
