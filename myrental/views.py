@@ -12,7 +12,7 @@ from django.conf import settings
 from django.http import JsonResponse
 from django.views import View
 from .models import *
-import datetime
+from datetime import datetime
 from django.db.models import *
 import json
 from django.http import JsonResponse
@@ -34,7 +34,7 @@ class CreateCheckoutSessionView(LoginRequiredMixin, PermissionRequiredMixin, Vie
             print('yyy',car_ids)
             start_dates = data.get('start_date')
             end_dates = data.get('end_date')
-
+            print(start_dates)
             checkout_session = stripe.checkout.Session.create(
                 payment_method_types=['card'],
                 line_items=[{
@@ -162,15 +162,15 @@ def get_available_cars(start_date, end_date):
 class RentalViewFirst(View):
     def get(self, request):
         try:
-            cate = CategoryCar.objects.all().distinct()
+            cate = CategoryCar.objects.all()
             car = Car.objects.values('make').distinct()
             feature = Feature.objects.all()
 
             start_date = request.GET.get('start_date')
             end_date = request.GET.get('end_date')
 
-            datetime.datetime.strptime(start_date, "%Y-%m-%d").date()
-            datetime.datetime.strptime(end_date, "%Y-%m-%d").date()
+            datetime.strptime(start_date, "%Y-%m-%d").date()
+            datetime.strptime(end_date, "%Y-%m-%d").date()
             
             available_cars = get_available_cars(start_date, end_date)
             return render(request, "homeren.html", {
