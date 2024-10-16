@@ -16,6 +16,7 @@ urlpatterns = [
     path('category/', views.ManageCar.as_view(), name="manage_car"),
     path('category/<int:pk>/', views.SelectCategory.as_view(), name="catcar_id"),
     path('category/search/<int:pk>/', views.CategorySearch.as_view(), name="category_search"),
+    path('category/refresh/<int:pk>', views.RefreshSearch.as_view(), name="refresh_search"),
 
     path('category/addcar/', views.AddCar.as_view(), name="add_car"),
     path('category/editcar/<int:pk>', views.EditCar.as_view(), name="edit_car"),

@@ -41,10 +41,7 @@
             <thead>
                 <tr>
                     <th class="bg-slate-400 border">รหัสการจอง</th>
-                    {% comment %} <th class="bg-slate-400 border">รถ</th> {% endcomment %}
                     <th class="bg-slate-400 border">ลูกค้า</th>
-                    {% comment %} <th class="bg-slate-400 border">วันเริ่มต้น</th>
-                    <th class="bg-slate-400 border">วันสิ้นสุด</th> {% endcomment %}
                     <th class="bg-slate-400 border">ราคาทั้งหมด</th>
                     <th class="bg-slate-400 border">ราคาที่ต้องจ่าย</th>
                     <th class="bg-slate-400 border">สถานะ</th>
@@ -54,10 +51,7 @@
                 {% for rental in rentals %}
                         <tr class="hover:bg-gray-50">
                             <td><a href="{% url 'rental_detail' pk=rental.id %}" class='text-blue-600 underline'>{{ rental.id }}</a></td>
-                            {% comment %} <td>{{ rental_car.car.make }} {{ rental_car.car.model }}</td> {% endcomment %}
                             <td><a href="{% url 'customer_info' pk=rental.customer.id %}" class='text-blue-600 underline'>{{ rental.customer.user.username }}</a></td>
-                            {% comment %} <td>{{ rental_car.start_date }}</td>
-                            <td>{{ rental_car.end_date }}</td> {% endcomment %}
                             <td>{{ rental.total_price }} บาท</td>
                             <td>{{ rental.deposit }} บาท</td>
                             <td>{{ rental.status }}</td>
