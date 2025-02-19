@@ -135,18 +135,7 @@ STATICFILES_DIRS = [
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-STRIPE_PUBLIC_KEY = 'pk_test_51Q3HzXC5MaUX4IVzvlIsXholEaxYdB8cGpa4NziQfk6IhOvk2j7FUhKmiyV2GYidtbzyYpJO7HT5ITkKXjxQo0HE00t4kvG3D3'
-STRIPE_SECRET_KEY = 'sk_test_51Q3HzXC5MaUX4IVz2rCSuclhRcOvYMOPlSxgEgx2sqto9wJyaQP1zJzRzj9tSlsR4nbh4IdysqpeFKqHhTXqVo1O0044aN5WDC'
 
-# settings.py
-
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_PORT = 587
-EMAIL_USE_TLS = True
-EMAIL_HOST_USER = '65070217@kmitl.ac.th'  
-EMAIL_HOST_PASSWORD = 'ooto yxoj nodc mfjy' 
-DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 
 
 MEDIA_URL = '/media/'  # URL สำหรับเข้าถึงไฟล์มีเดีย
